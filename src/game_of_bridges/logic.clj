@@ -54,11 +54,11 @@
     (->> [:up :down :left :right]
          (map #(get-item % island islands))
          (filter identity)
-         (filter (partial can-add-bridge? bridges island)
-                 #_(complement (partial line/get-blocked bridges island))))))
+         (filter (partial can-add-bridge? bridges island)))))
 
 (defn get-target [x y source islands bridges]
-  (when-let [target (get-item (line/direction source {:x x :y y}) source islands)]
+  (when-let [target (get-item (line/direction source {:x x :y y})
+                              source islands)]
     (and (some #{target} (neighbors source islands bridges)) target)))
 
 (defn get-island-at [x y islands]

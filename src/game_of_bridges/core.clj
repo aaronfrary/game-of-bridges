@@ -43,7 +43,8 @@
                 (doseq [i (logic/neighbors island islands bridges)]
                        (hilight-island i)))
           source-island
-            (if-let [target-island (logic/get-target x y source-island islands bridges)]
+            (if-let [target-island (logic/get-target
+                                     x y source-island islands bridges)]
               (hilight-bridge {:fst source-island :snd target-island})
               (reset! source-island-atom nil)))
     ;; Draw the rest
