@@ -19,25 +19,40 @@
 (ns game-of-bridges.core
   (:require [quil.core :refer :all]
             [game-of-bridges.graphics :refer :all]
+            [game-of-bridges.line  :as line]
             [game-of-bridges.logic :as logic])
   (:gen-class))
 
 ;;; Mutable game state
 (def islands-atom (atom []))
 (def bridges-atom (atom []))
+(def source-island-atom (atom nil))
 
 (defn draw "Main game loop." []
   (let [islands @islands-atom
         bridges @bridges-atom
-        {:keys [x y]} (get-mouse)]
+        source-island @source-island-atom
+        {:keys [x y]} (get-mouse)
+        island (logic/get-island-at x y islands)
+        bridge (logic/get-bridge-at x y islands bridges)]
     (clear-screen)
-    (when-let [bridge (logic/get-bridge-at x y islands bridges)]
-      (hilight-bridge bridge))
-    (when-let [island (logic/get-island-at x y islands)]
-      (when-let [neighbors (and ((comp not logic/full?) bridges island)
-                                (logic/get-neighbors island islands bridges))]
-        (hilight-island island)
-        (doseq [i neighbors] (hilight-island i))))
+    ;; Conditional hilighting
+    (cond bridge (hilight-bridge bridge)
+          island
+            (do (reset! source-island-atom island)
+                (hilight-island island)
+                (doseq [i (logic/neighbors island islands bridges)]
+                       (hilight-island i)))
+          source-island
+            (let [target-island (logic/get-item
+                                  (line/direction source-island {:x x :y y})
+                                  source-island islands)]
+              (if (and target-island
+                       (some #{target-island}
+                             (logic/neighbors source-island islands bridges)))
+                (hilight-bridge {:fst source-island :snd target-island})
+                (reset! source-island-atom nil))))
+    ;; Draw the rest
     (doseq [i (filter (partial logic/full? bridges) islands)]
       (hilight-full-island i))
     (doseq [b bridges] (draw-bridge b))

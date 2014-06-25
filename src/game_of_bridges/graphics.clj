@@ -78,11 +78,16 @@
   (line-function-factory line bridge-hi-color bridge-hi-weight))
 (def hilight-double-bridge
   (line-function-factory line bridge-hi-color double-bridge-hi-weight))
+(def hilight-potential-bridge
+  (line-function-factory line island-hi-color bridge-hi-weight))
 
-(defn hilight-bridge [{:keys [num] :as bridge}]
+(defn hilight-bridge [{:keys [fst snd num] :as bridge}]
   (case num
+    2 (hilight-double-bridge bridge)
     1 (hilight-single-bridge bridge)
-    2 (hilight-double-bridge bridge)))
+    nil (hilight-potential-bridge bridge))
+  (hilight-island fst)
+  (hilight-island snd))
 
 (defn draw-bridge [{:keys [num] :as bridge}]
   (case num
