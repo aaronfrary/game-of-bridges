@@ -19,7 +19,6 @@
 (ns game-of-bridges.core
   (:require [quil.core :refer :all]
             [game-of-bridges.graphics :refer :all]
-            [game-of-bridges.line  :as line]
             [game-of-bridges.logic :as logic])
   (:gen-class))
 
@@ -44,14 +43,9 @@
                 (doseq [i (logic/neighbors island islands bridges)]
                        (hilight-island i)))
           source-island
-            (let [target-island (logic/get-item
-                                  (line/direction source-island {:x x :y y})
-                                  source-island islands)]
-              (if (and target-island
-                       (some #{target-island}
-                             (logic/neighbors source-island islands bridges)))
-                (hilight-bridge {:fst source-island :snd target-island})
-                (reset! source-island-atom nil))))
+            (if-let [target-island (logic/get-target x y source-island islands bridges)]
+              (hilight-bridge {:fst source-island :snd target-island})
+              (reset! source-island-atom nil)))
     ;; Draw the rest
     (doseq [i (filter (partial logic/full? bridges) islands)]
       (hilight-full-island i))
