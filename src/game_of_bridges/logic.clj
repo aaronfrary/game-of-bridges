@@ -72,3 +72,11 @@
        (filter identity)
        (first)))
 
+(defn add-bridge [bridges island-1 island-2]
+  (conj bridges {:fst island-1 :snd island-2 :num 1}))
+
+(defn inc-bridge [bridges bridge]
+  (let [bridges (remove #{bridge} bridges)]
+    (if (> (:num bridge) 1) bridges
+      (conj bridges (update-in bridge [:num] inc)))))
+
