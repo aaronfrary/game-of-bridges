@@ -16,7 +16,7 @@
 (defn full? [bridges island]
   (= (num-occupied bridges island) (:num island)))
 
-(defn game-success?
+(defn game-won?
   "Return true if puzzle has been solved."
   [islands bridges]
   (every? (partial full? bridges) islands))
