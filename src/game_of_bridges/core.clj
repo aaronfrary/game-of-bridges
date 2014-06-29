@@ -111,6 +111,7 @@
               {:x 7 :y 1 :num 2} {:x 8 :y 2 :num 1}
               {:x 1 :y 3 :num 4} {:x 4 :y 4 :num 5}
               {:x 7 :y 4 :num 1} {:x 1 :y 7 :num 3}
-              {:x 4 :y 7 :num 5} {:x 8 :y 7 :num 3}])
+              {:x 4 :y 7 :num 5} {:x 8 :y 7 :num 3}
+              {:x 4 :y 9 :num 1} {:x 8 :y 9 :num 1}])
   :ok)
 

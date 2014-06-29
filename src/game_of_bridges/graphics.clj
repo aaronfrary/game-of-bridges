@@ -16,7 +16,7 @@
 (def menu-item-hi-weight 26)
 
 (defn bg-color []        (color 50))
-(defn fg-color []           (color 255))
+(defn fg-color []        (color 255))
 (defn accent-color []    (color 200))
 (defn island-hi-color [] (color 120 120 180))
 (defn bridge-hi-color [] (color 60 60 180))

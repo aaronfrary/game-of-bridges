@@ -16,10 +16,14 @@
 (defn full? [bridges island]
   (= (num-occupied bridges island) (:num island)))
 
+(defn connected? [islands bridges]
+  (= (count (util/connected-components islands bridges)) 1))
+
 (defn game-won?
   "Return true if puzzle has been solved."
   [islands bridges]
-  (every? (partial full? bridges) islands))
+  (and (every? (partial full? bridges) islands)
+       (connected? islands bridges)))
 
 (defn can-add-bridge? [bridges island-1 island-2]
   (not (or (full? bridges island-1)

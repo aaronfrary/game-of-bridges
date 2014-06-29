@@ -12,5 +12,21 @@
             (pairwise f tl))
     nil))
 
-#_(pairwise list '(1 2 3 4))
-;((1 2) (1 3) (1 4) (2 3) (2 4) (3 4))
+;;; Union Find algorithm for graph connectedness
+
+(defn -find
+  ([sets a] (some #(and (% a) %) sets))
+  ([sets a & more]
+   (clojure.set/union (-find sets a) (apply (partial -find sets) more))))
+
+(defn -remove
+  ([sets a] (set (filter (complement #(% a)) sets)))
+  ([sets a & more] (apply (partial -remove (-remove sets a)) more)))
+
+(defn -join
+  ([sets a b] (conj (-remove sets a b) (-find sets a b)))
+  ([sets {:keys [fst snd]}] (-join sets fst snd)))
+
+(defn connected-components [nodes edges]
+    (reduce -join (set (map hash-set nodes)) edges))
+
