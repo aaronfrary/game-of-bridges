@@ -17,10 +17,10 @@
 ;;; bridges implement the "line" interface: { :fst <point>, :snd <point> }
 
 (ns game-of-bridges.core
-  (:require [quil.core :refer :all]
-            [game-of-bridges.graphics :refer :all]
+  (:require [quil.core :as q]
+            [game-of-bridges.graphics :as g]
             [game-of-bridges.io :as io]
-            [game-of-bridges.logic :as logic])
+            [game-of-bridges.logic :as l])
   (:gen-class))
 
 (declare play-game)
@@ -44,27 +44,27 @@
   (reset! screen-atom
           (menu "Correct! Play again?"
                 ["Yes" (partial new-game! @islands-atom)]
-                ["No" exit])))
+                ["No" q/exit])))
 
 (defn menu [title & items]
   (fn []
     (let [margin 1
-          s-width  (px->coord (width))
-          s-height (px->coord (height))
+          s-width  (g/px->coord (q/width))
+          s-height (g/px->coord (q/height))
           menu-width (- s-width  (* margin 2))
           menu-height (+ (count items) 2) #_(- s-height (* margin 2))
-          x-center (round (/ s-width 2))
-          mouse-y (:y (get-mouse)) 
+          x-center (q/round (/ s-width 2))
+          mouse-y (:y (g/get-mouse)) 
           clicked @click-atom]
       (reset! click-atom false)
-      (draw-menu-box margin menu-width menu-height)
-      (draw-text title x-center (inc margin))
+      (g/draw-menu-box margin menu-width menu-height)
+      (g/draw-text title x-center (inc margin))
       (loop [depth (+ margin 2)
              [[item-name callback] & items] items]
         (when (= mouse-y depth)
-          (hilight-menu-item x-center depth menu-width)
+          (g/hilight-menu-item x-center depth menu-width)
           (when clicked (callback)))
-        (draw-text item-name x-center depth)
+        (g/draw-text item-name x-center depth)
         (when (seq items) (recur (inc depth) items))))))
 
 (defn play-game "Main game loop." []
@@ -72,43 +72,43 @@
         bridges @bridges-atom
         source-island @source-island-atom
         clicked @click-atom
-        {:keys [x y]} (get-mouse)
-        island (logic/get-island-at x y islands)
-        bridge (logic/get-bridge-at x y islands bridges)]
+        {:keys [x y]} (g/get-mouse)
+        island (l/get-island-at x y islands)
+        bridge (l/get-bridge-at x y islands bridges)]
     (reset! click-atom false)
-    (clear-screen)
+    (g/clear-screen)
     ;; Conditional hilighting
     (cond bridge
             (if clicked
-              (swap! bridges-atom logic/inc-bridge bridge)
-              (hilight-bridge bridge))
+              (swap! bridges-atom l/inc-bridge bridge)
+              (g/hilight-bridge bridge))
           island
             (do (reset! source-island-atom island)
-                (hilight-island island)
-                (doseq [i (logic/neighbors island islands bridges)]
-                       (hilight-island i)))
+                (g/hilight-island island)
+                (doseq [i (l/neighbors island islands bridges)]
+                       (g/hilight-island i)))
           source-island
-            (if-let [target-island (logic/get-target x y source-island islands bridges)]
+            (if-let [target-island (l/get-target x y source-island islands bridges)]
               (if clicked
-                (swap! bridges-atom logic/add-bridge source-island target-island)
-                (hilight-bridge {:fst source-island :snd target-island}))
+                (swap! bridges-atom l/add-bridge source-island target-island)
+                (g/hilight-bridge {:fst source-island :snd target-island}))
               (reset! source-island-atom nil)))
     ;; Draw the rest
-    (doseq [i (filter (partial logic/full? bridges) islands)]
-      (hilight-full-island i))
-    (doseq [b bridges] (draw-bridge b))
-    (doseq [i islands] (draw-island i))
-    (when (logic/game-won? islands bridges) (win-game))))
+    (doseq [i (filter (partial l/full? bridges) islands)]
+      (g/hilight-full-island i))
+    (doseq [b bridges] (g/draw-bridge b))
+    (doseq [i islands] (g/draw-island i))
+    (when (l/game-won? islands bridges) (win-game))))
 
 (defn -main [& args]
   (if-let [file-name (first args)]
     (let [islands (io/read-puzzle file-name)]
-      (sketch
+      (q/sketch
         :title "Game of Bridges"
-        :setup (partial setup islands)
+        :setup (partial g/setup islands)
         :draw (fn [] (@screen-atom))
         :mouse-released (fn [] (reset! click-atom true))
-        :size (puzzle-size islands))
+        :size (g/puzzle-size islands))
       (new-game! islands)
       :ok)
     :missing-filename))

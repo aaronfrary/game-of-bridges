@@ -20,6 +20,3 @@
        (map-indexed str->islands)
        (flatten)))
 
-#_(def p (read-puzzle "src/game_of_bridges/test-puzzle.txt"))
-
-#_(prn (map :x p))
