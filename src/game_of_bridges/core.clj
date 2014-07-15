@@ -19,6 +19,7 @@
 (ns game-of-bridges.core
   (:require [quil.core :refer :all]
             [game-of-bridges.graphics :refer :all]
+            [game-of-bridges.io :as io]
             [game-of-bridges.logic :as logic])
   (:gen-class))
 
@@ -47,7 +48,7 @@
 
 (defn menu [title & items]
   (fn []
-    (let [margin 2
+    (let [margin 1
           s-width  (px->coord (width))
           s-height (px->coord (height))
           menu-width (- s-width  (* margin 2))
@@ -100,18 +101,18 @@
     (when (logic/game-won? islands bridges) (win-game))))
 
 (defn -main [& args]
-  (sketch
-    :title "Game of Bridges"
-    :setup setup
-    :draw (fn [] (@screen-atom))
-    :mouse-released (fn [] (reset! click-atom true))
-    :size [640 480])
-  ;; Sample setup for testing
-  (new-game! [{:x 1 :y 1 :num 3} {:x 4 :y 1 :num 5}
-              {:x 7 :y 1 :num 2} {:x 8 :y 2 :num 1}
-              {:x 1 :y 3 :num 4} {:x 4 :y 4 :num 5}
-              {:x 7 :y 4 :num 1} {:x 1 :y 7 :num 3}
-              {:x 4 :y 7 :num 5} {:x 8 :y 7 :num 3}
-              {:x 4 :y 9 :num 1} {:x 8 :y 9 :num 1}])
-  :ok)
+  (if-let [file-name (first args)]
+    (let [islands (io/read-puzzle file-name)]
+      (sketch
+        :title "Game of Bridges"
+        :setup (partial setup islands)
+        :draw (fn [] (@screen-atom))
+        :mouse-released (fn [] (reset! click-atom true))
+        :size (puzzle-size islands))
+      (new-game! islands)
+      :ok)
+    :missing-filename))
+
+(defn -test-run []
+  (-main "resources/puzzles/test-puzzle.txt"))
 

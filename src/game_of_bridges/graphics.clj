@@ -4,7 +4,7 @@
 
 ;;; TODO: Make this whole module less kludgy
 
-(defn master-scale [] (round (* (height) 0.083)))
+(def master-scale 40)
 (def text-scale 0.5)
 (def text-bump 0.05)
 (def island-scale 1)
@@ -30,13 +30,19 @@
 (defmacro with-style [& body]
   `(do (push-style) ~@body (pop-style)))
 
-(defn coord->px [x] (* (master-scale) x))
+(defn coord->px [x] (* master-scale x))
 
-(defn px->coord [px] (quot (+ (/ (master-scale) 2) px) (master-scale)))
+(defn px->coord [px] (quot (+ (/ master-scale 2) px) master-scale))
 
 (defn to-scale [f & args] (apply f (map coord->px args)))
 
-(defn setup []
+(defn puzzle-max [dim islands]
+  (->> islands (map dim) (apply max) (inc) (coord->px)))
+
+(defn puzzle-size [islands]
+  [(puzzle-max :x islands) (puzzle-max :y islands)])
+
+(defn setup [islands]
   (ellipse-mode :center)
   (text-align :center :center)
   (to-scale text-size text-scale)
