@@ -24,11 +24,11 @@
             [game-of-bridges.logic :as l])
   (:gen-class))
 
-(declare play-game)
-;(declare menu)
+(declare game-draw)
+(declare game-click)
 
 (defn new-game [new-islands]
-  {:screen play-game
+  {:screen {:draw game-draw, :click game-click}
    :islands new-islands
    :bridges []
    :source nil
@@ -36,32 +36,12 @@
 
 (defn check-game-won [state]
   (if (l/game-won? state)
-    (do (prn "win") (q/exit))
-    #_(menu "Correct! Play again?"
-          ["Yes" (partial new-game! @islands-atom)]
-          ["No" q/exit])
+    (assoc state :screen
+           (g/menu "Correct! Play again?"
+                   ["Yes" (partial new-game [{:x 3 :y 2 :num 1}
+                                             {:x 3 :y 6 :num 1}])]
+                   ["No" q/exit]))
     state))
-
-#_(defn menu [title & items]
-  (fn []
-    (let [margin 1
-          s-width  (g/px->coord (q/width))
-          s-height (g/px->coord (q/height))
-          menu-width (- s-width  (* margin 2))
-          menu-height (+ (count items) 2) #_(- s-height (* margin 2))
-          x-center (q/round (/ s-width 2))
-          mouse-y (:y (g/get-mouse)) 
-          clicked @click-atom]
-      (reset! click-atom false)
-      (g/draw-menu-box margin menu-width menu-height)
-      (g/draw-text title x-center (inc margin))
-      (loop [depth (+ margin 2)
-             [[item-name callback] & items] items]
-        (when (= mouse-y depth)
-          (g/hilight-menu-item x-center depth menu-width)
-          (when clicked (callback)))
-        (g/draw-text item-name x-center depth)
-        (when (seq items) (recur (inc depth) items))))))
 
 (defn track-source-island
   "TODO: docstring"
@@ -79,7 +59,8 @@
     (check-game-won
       (cond bridge (update-in state [:bridges] l/inc-bridge bridge)
             (and (:source state) (:target state))
-            (update-in state [:bridges] l/add-bridge state)))))
+              (update-in state [:bridges] l/add-bridge state)
+            :else state))))
 
 (defn game-draw
   "Main game draw loop."
@@ -107,10 +88,10 @@
         :title "Game of Bridges"
         :middleware [qm/fun-mode]
         :setup (fn [] (g/setup islands) (new-game islands))
-        :draw game-draw
-        ;:draw (fn [state] ((:screen state) state event))
+        :draw (fn [state] ((get-in state [:screen :draw]) state))
         :mouse-moved track-source-island
-        :mouse-released game-click
+        :mouse-released (fn [state event]
+                          ((get-in state [:screen :click]) state event))
         :size (g/puzzle-size islands))
       :ok)
     :TODO-help-text))

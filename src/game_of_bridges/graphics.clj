@@ -122,3 +122,30 @@
   ((line-function-factory line success-color menu-item-hi-weight)
      (line/line (- x (/ w 2) -1) y (+ x (/ w 2) -1) y)))
 
+;;; Menus!
+;;; ...
+;;; Not really sure where to put this, but it took up
+;;; too much space in core. Can probably just get rid
+;;; of this if we switch to JavaScript / ClojureScript.
+
+(defn menu [title & items]
+  (let [margin 1
+        s-width  (px->coord (width))
+        s-height (px->coord (height))
+        menu-width (- s-width  (* margin 2))
+        menu-height (+ (count items) 2) #_(- s-height (* margin 2))
+        x-center (round (/ s-width 2))]
+    {:draw (fn [state]
+             (draw-menu-box margin menu-width menu-height)
+             (draw-text title x-center (inc margin))
+             (loop [depth (+ margin 2), [[item-name _] & items] items]
+               (when (= (:y (get-mouse)) depth)
+                 (hilight-menu-item x-center depth menu-width))
+               (draw-text item-name x-center depth)
+               (when (seq items) (recur (inc depth) items))))
+     :click (fn [state event]
+              (loop [depth (+ margin 2) [[_ callback] & items] items]
+                (cond (= (:y (get-mouse)) depth) (callback)
+                      (seq items) (recur (inc depth) items)
+                      :else state)))}))
+
