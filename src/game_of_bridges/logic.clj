@@ -21,7 +21,7 @@
 
 (defn game-won?
   "Return true if puzzle has been solved."
-  [islands bridges]
+  [{:keys [islands bridges]}]
   (and (every? (partial full? bridges) islands)
        (connected? islands bridges)))
 
@@ -53,31 +53,31 @@
 
 (defn neighbors
   "Return islands to which a bridge to `island' can be added."
-  [island islands bridges]
+  [island {:keys [islands bridges]}]
   (if (full? bridges island) []
     (->> [:up :down :left :right]
          (map #(get-item % island islands))
          (filter identity)
          (filter (partial can-add-bridge? bridges island)))))
 
-(defn get-target [x y source islands bridges]
-  (when-let [target (get-item (line/direction source {:x x :y y})
+(defn get-target [{:keys [islands bridges source] :as state} pos]
+  (when-let [target (get-item (line/direction source pos)
                               source islands)]
-    (and (some #{target} (neighbors source islands bridges)) target)))
+    (and (some #{target} (neighbors source state)) target)))
 
-(defn get-island-at [x y islands]
-  (some #(and (= [x y] [(:x %) (:y %)]) %) islands))
+(defn get-island-at [{:keys [islands]} pos]
+  (some #(and (util/keys= [:x :y] pos %) %) islands))
 
-(defn get-bridge-at [x y islands bridges]
+(defn get-bridge-at [{:keys [islands bridges]} pos]
   (->> [:up :down :left :right]
-       (map #(get-item % x y islands))
+       (map #(get-item % pos islands))
        (filter identity)
        (util/pairwise (partial bridge-between bridges))
        (filter identity)
        (first)))
 
-(defn add-bridge [bridges island-1 island-2]
-  (conj bridges {:fst island-1 :snd island-2 :num 1}))
+(defn add-bridge [bridges {:keys [source target]}]
+  (conj bridges {:fst source :snd target :num 1}))
 
 (defn inc-bridge [bridges bridge]
   (let [bridges (remove #{bridge} bridges)]

@@ -36,6 +36,11 @@
 
 (defn to-scale [f & args] (apply f (map coord->px args)))
 
+(defn mouse->coord [m]
+  (-> m (update-in [:x] px->coord) (update-in [:y] px->coord)))
+
+(defn get-mouse [] (mouse->coord {:x (mouse-x) :y (mouse-y)}))
+
 (defn puzzle-max [dim islands]
   (->> islands (map dim) (apply max) (inc) (coord->px)))
 
@@ -49,8 +54,6 @@
   (no-stroke))
 
 (defn clear-screen [] (background (bg-color)))
-
-(defn get-mouse [] {:x (px->coord (mouse-x)), :y (px->coord (mouse-y))})
 
 (defn circle [x y scale]
   (to-scale ellipse x y scale scale))

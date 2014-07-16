@@ -18,35 +18,31 @@
 
 (ns game-of-bridges.core
   (:require [quil.core :as q]
+            [quil.middleware :as qm]
             [game-of-bridges.graphics :as g]
             [game-of-bridges.io :as io]
             [game-of-bridges.logic :as l])
   (:gen-class))
 
 (declare play-game)
-(declare menu)
+;(declare menu)
 
-;;; Mutable game state
-(def screen-atom (atom play-game))
-(def islands-atom (atom []))
-(def bridges-atom (atom []))
-(def source-island-atom (atom nil))
-(def click-atom (atom false)) ; HACK
+(defn new-game [new-islands]
+  {:screen play-game
+   :islands new-islands
+   :bridges []
+   :source nil
+   :target nil})
 
-(defn new-game! [new-islands]
-  (reset! bridges-atom [])
-  (reset! islands-atom new-islands)
-  (reset! source-island-atom nil)
-  (reset! click-atom false)
-  (reset! screen-atom play-game))
+(defn check-game-won [state]
+  (if (l/game-won? state)
+    (do (prn "win") (q/exit))
+    #_(menu "Correct! Play again?"
+          ["Yes" (partial new-game! @islands-atom)]
+          ["No" q/exit])
+    state))
 
-(defn win-game []
-  (reset! screen-atom
-          (menu "Correct! Play again?"
-                ["Yes" (partial new-game! @islands-atom)]
-                ["No" q/exit])))
-
-(defn menu [title & items]
+#_(defn menu [title & items]
   (fn []
     (let [margin 1
           s-width  (g/px->coord (q/width))
@@ -67,51 +63,57 @@
         (g/draw-text item-name x-center depth)
         (when (seq items) (recur (inc depth) items))))))
 
-(defn play-game "Main game loop." []
-  (let [islands @islands-atom
-        bridges @bridges-atom
-        source-island @source-island-atom
-        clicked @click-atom
-        {:keys [x y]} (g/get-mouse)
-        island (l/get-island-at x y islands)
-        bridge (l/get-bridge-at x y islands bridges)]
-    (reset! click-atom false)
+(defn track-source-island
+  "TODO: docstring"
+  [state mouse]
+  (let [island (l/get-island-at state (g/mouse->coord mouse))]
+    (cond island (-> state (assoc :source island) (assoc :target nil))
+          (:source state) (assoc state :target
+                                 (l/get-target state (g/mouse->coord mouse)))
+          :else state)))
+
+(defn game-click
+  "TODO: docstring"
+  [state mouse]
+  (let [bridge (l/get-bridge-at state (g/mouse->coord mouse))]
+    (check-game-won
+      (cond bridge (update-in state [:bridges] l/inc-bridge bridge)
+            (and (:source state) (:target state))
+            (update-in state [:bridges] l/add-bridge state)))))
+
+(defn game-draw
+  "Main game draw loop."
+  [{:keys [islands bridges source target] :as state}]
+  (let [mouse (g/get-mouse)
+        island (l/get-island-at state mouse)
+        bridge (l/get-bridge-at state mouse)]
     (g/clear-screen)
     ;; Conditional hilighting
-    (cond bridge
-            (if clicked
-              (swap! bridges-atom l/inc-bridge bridge)
-              (g/hilight-bridge bridge))
-          island
-            (do (reset! source-island-atom island)
-                (g/hilight-island island)
-                (doseq [i (l/neighbors island islands bridges)]
+    (cond bridge (g/hilight-bridge bridge)
+          island (do (g/hilight-island island)
+                     (doseq [i (l/neighbors island state)]
                        (g/hilight-island i)))
-          source-island
-            (if-let [target-island (l/get-target x y source-island islands bridges)]
-              (if clicked
-                (swap! bridges-atom l/add-bridge source-island target-island)
-                (g/hilight-bridge {:fst source-island :snd target-island}))
-              (reset! source-island-atom nil)))
-    ;; Draw the rest
+          (and source target) (g/hilight-bridge {:fst source :snd target}))
     (doseq [i (filter (partial l/full? bridges) islands)]
       (g/hilight-full-island i))
+    ;; Draw the rest
     (doseq [b bridges] (g/draw-bridge b))
-    (doseq [i islands] (g/draw-island i))
-    (when (l/game-won? islands bridges) (win-game))))
+    (doseq [i islands] (g/draw-island i))))
 
 (defn -main [& args]
   (if-let [file-name (first args)]
     (let [islands (io/read-puzzle file-name)]
       (q/sketch
         :title "Game of Bridges"
-        :setup (partial g/setup islands)
-        :draw (fn [] (@screen-atom))
-        :mouse-released (fn [] (reset! click-atom true))
+        :middleware [qm/fun-mode]
+        :setup (fn [] (g/setup islands) (new-game islands))
+        :draw game-draw
+        ;:draw (fn [state] ((:screen state) state event))
+        :mouse-moved track-source-island
+        :mouse-released game-click
         :size (g/puzzle-size islands))
-      (new-game! islands)
       :ok)
-    :missing-filename))
+    :TODO-help-text))
 
 (defn -test-run []
   (-main "resources/puzzles/test-puzzle.txt"))

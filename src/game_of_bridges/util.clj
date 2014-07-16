@@ -1,5 +1,8 @@
 (ns game-of-bridges.util)
 
+(defn keys= [ks & args]
+  (every? #(apply = (map % args)) ks))
+
 (defn set= [& args]
   (apply = (map set args)))
 
