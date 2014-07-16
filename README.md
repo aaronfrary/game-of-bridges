@@ -12,17 +12,29 @@ islands such that the following criteria are met:
   that island.
 - Each island can be reached from any other following a path over the bridges.
 
-As far as I know this is (will be) the first implementation of the game in
-Clojure (please let me know if this is not the case, or if you know someone
-who's done it in another Lisp).
+Implemented in (mostly) pure functional Clojure - side effects are limited to
+the draw functions.
+
+Installation
+------------
+
+Builds with [leiningen] (http://leiningen.org). I'll include a download link
+once the project is ready for the world.
 
 Upcoming Features
 -----------------
 
-- Complete "basic" game
-- Puzzle generation for various sizes and difficulties
-- Step-by-step puzzle solver that can be used at any point to hint at the next
-  move.
+- Step-by-step puzzle solver that can give a hint for the next move or solve a
+  whole puzzle.
+
+References
+----------
+
+- Yen, S. (2011).
+  Elimination Search for puzzle games: An Application for Hashi Solver,
+  in *IEEE International Conference on Fuzzy Systems (FUZZ)*,
+  June 27-30, 2011, Taipei, Taiwan, 185-189. IEEE.
+  [[link] (http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6007662)]
 
 License
 -------
