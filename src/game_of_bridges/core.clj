@@ -56,6 +56,10 @@
 (defn game-click
   "TODO: docstring"
   [state mouse]
+  (prn "<-- island & config")
+  (prn (first (:islands state)))
+  (pprint (s/all-configurations state (first (:islands state)))) ;XXX
+  (prn "-->")
   (let [bridge (l/get-bridge-at state (g/mouse->coord mouse))]
     (check-game-won
       (cond bridge (update-in state [:bridges] l/inc-bridge bridge)

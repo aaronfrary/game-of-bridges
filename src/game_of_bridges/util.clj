@@ -1,5 +1,10 @@
 (ns game-of-bridges.util)
 
+(defn strcmp [s1 s2]
+  (compare (str s1) (str s2)))
+
+(def str< (comp neg? strcmp))
+
 (defn keys= [ks & args]
   (every? #(apply = (map % args)) ks))
 
@@ -8,6 +13,9 @@
 
 (defn intersect [& args]
   (apply clojure.set/intersection (map set args)))
+
+(defn union [& args]
+  (apply clojure.set/union (map set args)))
 
 (defn pairwise [f [hd & tl]]
   (if (seq tl)
