@@ -17,11 +17,12 @@
 ;;; bridges implement the "line" interface: { :fst <point>, :snd <point> }
 
 (ns game-of-bridges.core
-  (:require [quil.core :as q]
-            [quil.middleware :as qm]
+  (:require [quil.core                :as q]
+            [quil.middleware          :as qm]
             [game-of-bridges.graphics :as g]
-            [game-of-bridges.io :as io]
-            [game-of-bridges.logic :as l])
+            [game-of-bridges.io       :as io]
+            [game-of-bridges.logic    :as l]
+            [game-of-bridges.solver   :as s])
   (:gen-class))
 
 (declare game-draw)
@@ -59,7 +60,7 @@
     (check-game-won
       (cond bridge (update-in state [:bridges] l/inc-bridge bridge)
             (and (:source state) (:target state))
-              (update-in state [:bridges] l/add-bridge state)
+              (update-in state [:bridges] l/add-new-bridge state)
             :else state))))
 
 (defn game-draw

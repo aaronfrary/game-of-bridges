@@ -76,11 +76,16 @@
        (filter identity)
        (first)))
 
-(defn add-bridge [bridges {:keys [source target]}]
+(defn add-new-bridge [bridges {:keys [source target]}]
   (conj bridges {:fst source :snd target :num 1}))
 
 (defn inc-bridge [bridges bridge]
   (let [bridges (remove #{bridge} bridges)]
     (if (> (:num bridge) 1) bridges
       (conj bridges (update-in bridge [:num] inc)))))
+
+(defn add-bridge [bridges island-1 island-2]
+  (if-let [bridge (bridge-between bridges island-1 island-2)]
+    (inc-bridge bridges bridge)
+    (add-new-bridge bridges {:source island-1 :target island-2})))
 
