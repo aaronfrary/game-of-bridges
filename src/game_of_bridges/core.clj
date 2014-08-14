@@ -17,8 +17,10 @@
 ;;; bridges implement the "line" interface: { :fst <point>, :snd <point> }
 
 (ns game-of-bridges.core
+  (:use clojure.pprint)
   (:require [quil.core                :as q]
             [quil.middleware          :as qm]
+            [clojure.pprint           :refer [pprint]]
             [game-of-bridges.graphics :as g]
             [game-of-bridges.io       :as io]
             [game-of-bridges.logic    :as l]
@@ -58,7 +60,17 @@
   [state mouse]
   (prn "<-- island & config")
   (prn (first (:islands state)))
-  (pprint (s/all-configurations state (first (:islands state)))) ;XXX
+  (pprint (s/all-configurations state (first (:islands state))))
+  (prn "-->")
+  (prn "<-- intersection")
+  (pprint (s/intersect-bridges
+            (s/all-configurations state (first (:islands state)))))
+  (prn "-->")
+  (prn "<-- bridges")
+  (pprint (:bridges state))
+  (prn "-->")
+  (prn "<-- set diff")
+  (pprint (s/required-moves state (first (:islands state))))
   (prn "-->")
   (let [bridge (l/get-bridge-at state (g/mouse->coord mouse))]
     (check-game-won

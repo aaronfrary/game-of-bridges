@@ -17,6 +17,9 @@
 (defn union [& args]
   (apply clojure.set/union (map set args)))
 
+(defn set-diff [& args]
+  (apply clojure.set/difference (map set args)))
+
 (defn pairwise [f [hd & tl]]
   (if (seq tl)
     (concat (map (partial f hd) tl)
