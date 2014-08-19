@@ -96,9 +96,13 @@
   (force-add-bridge bridges {:fst source :snd target :num 1}))
 
 (defn inc-bridge [bridges bridge]
-  (filter #(<= (:num %) 2)
-          (map #(if (bridge= % bridge) (update-in % [:num] inc) %)
-               bridges)))
+  (keep #(cond
+           (not (bridge= % bridge)) %
+           (>= (:num %) 2)          nil
+           (full? bridges (:fst %)) nil
+           (full? bridges (:snd %)) nil
+           :else (update-in % [:num] inc))
+        bridges))
 
 (defn add-bridge
   [bridges island-1 island-2]
