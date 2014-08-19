@@ -58,20 +58,6 @@
 (defn game-click
   "TODO: docstring"
   [state mouse]
-  (prn "<-- island & config")
-  (prn (first (:islands state)))
-  (pprint (s/all-configurations state (first (:islands state))))
-  (prn "-->")
-  (prn "<-- intersection")
-  (pprint (s/intersect-bridges
-            (s/all-configurations state (first (:islands state)))))
-  (prn "-->")
-  (prn "<-- bridges")
-  (pprint (:bridges state))
-  (prn "-->")
-  (prn "<-- set diff")
-  (pprint (s/required-moves state (first (:islands state))))
-  (prn "-->")
   (let [bridge (l/get-bridge-at state (g/mouse->coord mouse))]
     (check-game-won
       (cond bridge (update-in state [:bridges] l/inc-bridge bridge)

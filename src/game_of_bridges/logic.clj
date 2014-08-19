@@ -2,6 +2,13 @@
   (:require [game-of-bridges.util :as util]
             [game-of-bridges.line :as line]))
 
+(defn canonical-bridge [{:keys [fst snd num] :as bridge}]
+  (if (util/str< snd fst) {:fst snd :snd fst :num num} bridge))
+
+(defn bridge= [b1 b2]
+  (= (dissoc (canonical-bridge b1) :num)
+     (dissoc (canonical-bridge b2) :num)))
+
 (defn get-bridges [bridges island]
   (filter #(some #{island} [(:fst %) (:snd %)])
           bridges))
@@ -24,6 +31,13 @@
   [{:keys [islands bridges]}]
   (and (every? (partial full? bridges) islands)
        (connected? islands bridges)))
+
+(defn isolating?
+  "Return true if state illegal due to isolation."
+  [{:keys [islands bridges] :as state}]
+  (and (some (partial every? (partial full? bridges))
+             (util/connected-components islands bridges))
+       (not (game-won? state))))
 
 (defn can-add-bridge? [bridges island-1 island-2]
   (not (or (full? bridges island-1)
@@ -56,8 +70,7 @@
   [island {:keys [islands bridges]}]
   (if (full? bridges island) []
     (->> [:up :down :left :right]
-         (map #(get-item % island islands))
-         (filter identity)
+         (keep #(get-item % island islands))
          (filter (partial can-add-bridge? bridges island)))))
 
 (defn get-target [{:keys [islands bridges source] :as state} pos]
@@ -70,22 +83,29 @@
 
 (defn get-bridge-at [{:keys [islands bridges]} pos]
   (->> [:up :down :left :right]
-       (map #(get-item % pos islands))
-       (filter identity)
+       (keep #(get-item % pos islands))
        (util/pairwise (partial bridge-between bridges))
-       (filter identity)
+       (keep identity)
        (first)))
 
+(defn force-add-bridge [bridges bridge]
+  (conj (remove (partial bridge= bridge) bridges)
+        (canonical-bridge bridge)))
+
 (defn add-new-bridge [bridges {:keys [source target]}]
-  (conj bridges {:fst source :snd target :num 1}))
+  (force-add-bridge bridges {:fst source :snd target :num 1}))
 
 (defn inc-bridge [bridges bridge]
-  (let [bridges (remove #{bridge} bridges)]
-    (if (> (:num bridge) 1) bridges
-      (conj bridges (update-in bridge [:num] inc)))))
+  (filter #(<= (:num %) 2)
+          (map #(if (bridge= % bridge) (update-in % [:num] inc) %)
+               bridges)))
 
-(defn add-bridge [bridges island-1 island-2]
+(defn add-bridge
+  [bridges island-1 island-2]
   (if-let [bridge (bridge-between bridges island-1 island-2)]
     (inc-bridge bridges bridge)
     (add-new-bridge bridges {:source island-1 :target island-2})))
+
+(defn merge-bridges [bridges-1 bridges-2]
+  (reduce force-add-bridge bridges-1 bridges-2))
 
