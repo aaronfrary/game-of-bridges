@@ -36,3 +36,5 @@
        (remove #(l/isolating? (update-in state [:bridges] l/merge-bridges %)))
        (intersect-bridges)))
 
+(defn next-move [state]
+  (first (mapcat (partial required-moves state) (:islands state))))

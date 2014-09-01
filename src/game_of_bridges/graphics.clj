@@ -99,6 +99,8 @@
   (line-function-factory line bridge-hi-color double-bridge-hi-weight))
 (def hilight-potential-bridge
   (line-function-factory line island-hi-color bridge-hi-weight))
+(def hilight-hint
+  (line-function-factory line success-color bridge-hi-weight))
 
 (defn hilight-bridge [{:keys [fst snd num] :as bridge}]
   (case num

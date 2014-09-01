@@ -35,7 +35,9 @@
    :islands new-islands
    :bridges []
    :source nil
-   :target nil})
+   :target nil
+   :hint nil
+   })
 
 (defn check-game-won [state]
   (if (l/game-won? state)
@@ -57,22 +59,24 @@
 
 (defn game-click
   "TODO: docstring"
-  [state mouse]
-  (let [bridge (l/get-bridge-at state (g/mouse->coord mouse))]
-    (check-game-won
-      (cond bridge (update-in state [:bridges] l/inc-bridge bridge)
-            (and (:source state) (:target state))
-              (update-in state [:bridges] l/add-new-bridge state)
-            :else state))))
+  [{:keys [source target] :as state}, mouse]
+  (-> state
+      (update-in [:bridges] l/add-bridge
+        (some identity [(l/get-bridge-at state (g/mouse->coord mouse))
+                        (:hint state)
+                        (when (and source target) {:fst source :snd target})]))
+      (assoc :hint nil)
+      (check-game-won)))
 
 (defn game-draw
   "Main game draw loop."
-  [{:keys [islands bridges source target] :as state}]
+  [{:keys [islands bridges source target hint] :as state}]
   (let [mouse (g/get-mouse)
         island (l/get-island-at state mouse)
         bridge (l/get-bridge-at state mouse)]
     (g/clear-screen)
     ;; Conditional hilighting
+    (when hint (g/hilight-hint hint))
     (cond bridge (g/hilight-bridge bridge)
           island (do (g/hilight-island island)
                      (doseq [i (l/neighbors island state)]
@@ -83,6 +87,9 @@
     ;; Draw the rest
     (doseq [b bridges] (g/draw-bridge b))
     (doseq [i islands] (g/draw-island i))))
+
+(defn hint [state]
+  (assoc state :hint (s/next-move state)))
 
 (defn -main [& args]
   (if-let [file-name (first args)]
@@ -95,6 +102,7 @@
         :mouse-moved track-source-island
         :mouse-released (fn [state event]
                           ((get-in state [:screen :click]) state event))
+        :key-typed (fn [state event] (if (= (:key event) :h) (hint state) state))
         :size (g/puzzle-size islands))
       :ok)
     :TODO-help-text))

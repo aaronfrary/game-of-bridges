@@ -105,10 +105,14 @@
         bridges))
 
 (defn add-bridge
-  [bridges island-1 island-2]
-  (if-let [bridge (bridge-between bridges island-1 island-2)]
-    (inc-bridge bridges bridge)
-    (add-new-bridge bridges {:source island-1 :target island-2})))
+  ([bridges bridge]
+   (if bridge
+     (add-bridge bridges (:fst bridge) (:snd bridge))
+     bridges))
+  ([bridges island-1 island-2]
+   (if-let [bridge (bridge-between bridges island-1 island-2)]
+     (inc-bridge bridges bridge)
+     (add-new-bridge bridges {:source island-1 :target island-2}))))
 
 (defn merge-bridges [bridges-1 bridges-2]
   (reduce force-add-bridge bridges-1 bridges-2))
