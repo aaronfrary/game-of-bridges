@@ -27,24 +27,22 @@
             [game-of-bridges.solver   :as s])
   (:gen-class))
 
-(declare game-draw)
-(declare game-click)
+(declare -main game-draw game-click)
 
-(defn new-game [new-islands] ; FIXME: Doesn't resize on new game 
+(defn new-game [new-islands]
   {:screen {:draw game-draw, :click game-click}
    :islands new-islands
    :bridges []
    :source nil
    :target nil
    :hint nil
-   :solve false
-   })
+   :solve false})
 
 (defn check-game-won [state]
   (if (l/game-won? state)
     (let [puzzle-names (take 5 (io/puzzle-dir))]
       (->> puzzle-names
-           (map #(partial new-game (io/read-puzzle %)))
+           (map #(fn [] (q/exit) (-main %)) #_(partial new-game (io/read-puzzle %)))
            (map vector (map io/strip-name puzzle-names)) ; (map vector %) == (zip %)
            (reverse)
            (cons ["No thanks!" q/exit])
