@@ -20,3 +20,14 @@
        (map-indexed str->islands)
        (flatten)))
 
+(defn puzzle-dir
+  ([] (puzzle-dir "resources/puzzles/"))
+  ([dir-name]
+   (->> (clojure.java.io/file dir-name)
+        (file-seq)
+        (filter #(-> % .isFile))
+        (map #(str dir-name (.getName %))))))
+
+(defn strip-name [file-name]
+  (clojure.string/replace file-name #".*/" ""))
+
