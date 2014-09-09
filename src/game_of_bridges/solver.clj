@@ -13,8 +13,8 @@
                                       l/merge-bridges current-bridges))))
 
 (defn all-configurations [state island]
-  (loop [n (l/num-occupied (:bridges state) island)
-         configurations [(l/get-bridges (:bridges state) island)]]
+  (loop [n (l/num-occupied state island)
+         configurations [(l/get-bridges state island)]]
     (if (= n (:num island))
       (->> configurations
            (map (partial sort util/strcmp))
@@ -38,3 +38,4 @@
 
 (defn next-move [state]
   (first (mapcat (partial required-moves state) (:islands state))))
+

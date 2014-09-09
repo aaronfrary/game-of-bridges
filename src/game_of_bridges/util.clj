@@ -26,6 +26,25 @@
             (pairwise f tl))
     nil))
 
+(defn make-item-getter
+  "Function factory for getting nearest item to a square in a direction."
+  [x-compare y-compare xy-key first-or-last]
+  (fn getter ([{:keys [x y]} items] (getter x y items))
+    ([x y items]
+     (->> items
+          (filter #(and (x-compare (:x %) x) (y-compare (:y %) y)))
+          (sort-by xy-key)
+          (first-or-last)))))
+
+(defn get-item [direction & args]
+  (apply (case direction
+           :up    (make-item-getter = > :y first)
+           :down  (make-item-getter = < :y last)
+           :left  (make-item-getter < = :x last)
+           :right (make-item-getter > = :x first)
+           (fn [& _] nil))
+         args))
+
 ;;; Union Find algorithm for graph connectedness
 
 (defn -find

@@ -90,7 +90,7 @@
                      (doseq [i (l/neighbors island state)]
                        (g/hilight-island i)))
           (and source target) (g/hilight-bridge {:fst source :snd target}))
-    (doseq [i (filter (partial l/full? bridges) islands)]
+    (doseq [i (filter (partial l/full? state) islands)]
       (g/hilight-full-island i))
     ;; Draw the rest
     (doseq [b bridges] (g/draw-bridge b))
