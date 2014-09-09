@@ -15,6 +15,10 @@
 ;;; islands implement the "point" interface: { :x <int>, :y <int> }
 ;;;
 ;;; bridges implement the "line" interface: { :fst <point>, :snd <point> }
+;;;
+;;; TODO: 1 - Boost speed by filling in 7s and 8s first
+;;;       2 - Include instructions somewhere
+;;;       3 - Revamp documentation
 
 (ns game-of-bridges.core
   (:use clojure.pprint)
@@ -42,7 +46,7 @@
   (if (l/game-won? state)
     (let [puzzle-names (take 5 (io/puzzle-dir))]
       (->> puzzle-names
-           (map #(fn [] (q/exit) (-main %)) #_(partial new-game (io/read-puzzle %)))
+           (map #(fn [] (q/exit) (-main %)))
            (map vector (map io/strip-name puzzle-names)) ; (map vector %) == (zip %)
            (reverse)
            (cons ["No thanks!" q/exit])
