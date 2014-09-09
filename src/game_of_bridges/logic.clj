@@ -80,8 +80,8 @@
   (keep #(cond
            (not (bridge= % bridge)) %
            (>= (:num %) 2)          nil
-           (full? bridges (:fst %)) nil
-           (full? bridges (:snd %)) nil
+           (full? {:bridges bridges} (:fst %)) nil
+           (full? {:bridges bridges} (:snd %)) nil
            :else (update-in % [:num] inc))
         bridges))
 
@@ -91,7 +91,7 @@
      (add-bridge bridges (:fst bridge) (:snd bridge))
      bridges))
   ([bridges island-1 island-2]
-   (if-let [bridge (bridge-between bridges island-1 island-2)]
+   (if-let [bridge (bridge-between {:bridges bridges} island-1 island-2)]
      (inc-bridge bridges bridge)
      (add-new-bridge bridges {:source island-1 :target island-2}))))
 
