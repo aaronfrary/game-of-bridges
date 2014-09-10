@@ -27,7 +27,6 @@
   (= (count (util/connected-components (:islands state) (:bridges state))) 1))
 
 (defn game-won?
-  "Return true if puzzle has been solved."
   [state]
   (and (every? (partial full? state) (:islands state))
        (connected? state)))

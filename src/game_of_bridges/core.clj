@@ -1,6 +1,6 @@
 ;;;; Bridges: A Logic Puzzle Game
 
-;;; Game state:
+;;; Data Structures:
 ;;;
 ;;; island := { :x <int>
 ;;;             :y <int>
@@ -10,15 +10,21 @@
 ;;;             :snd <island>
 ;;;             :num <int> }
 ;;;
-;;; Note:
+;;;   N.B.
+;;;     islands implement the "point" interface: { :x <int>, :y <int> }
+;;;     bridges implement the "line" interface: { :fst <point>, :snd <point> }
 ;;;
-;;; islands implement the "point" interface: { :x <int>, :y <int> }
 ;;;
-;;; bridges implement the "line" interface: { :fst <point>, :snd <point> }
+;;; Game State:
 ;;;
-;;; TODO: 1 - Boost speed by filling in 7s and 8s first
-;;;       2 - Include instructions somewhere
-;;;       3 - Revamp documentation
+;;; :screen  - provides current :draw function and function to be called on :click
+;;; :islands - list of islands in the puzzle.
+;;; :bridges - list of bridges player has added.
+;;; :source  - the last island moused over.
+;;; :target  - the next island on the path from :source to beyond the mouse.
+;;; :hint    - next step returned by the solver.
+;;; :solve   - if true, iteratively invoke the solver until there are no more
+;;;            require moves.
 
 (ns game-of-bridges.core
   (:use clojure.pprint)
@@ -56,7 +62,6 @@
     state))
 
 (defn track-source-island
-  "TODO: docstring"
   [state mouse]
   (let [island (l/get-island-at state (g/mouse->coord mouse))]
     (cond island (-> state (assoc :source island) (assoc :target nil))
@@ -65,7 +70,6 @@
           :else state)))
 
 (defn game-click
-  "TODO: docstring"
   [{:keys [source target hint] :as state}, mouse]
   (let [m (g/mouse->coord mouse)]
     (-> state
@@ -77,7 +81,6 @@
         (check-game-won))))
 
 (defn game-draw
-  "Main game draw loop."
   [{:keys [islands bridges source target hint] :as state}]
   (let [mouse (g/get-mouse)
         island (l/get-island-at state mouse)

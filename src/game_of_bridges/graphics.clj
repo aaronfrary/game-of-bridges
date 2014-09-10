@@ -2,8 +2,6 @@
   (:require [quil.core :refer :all]
             [game-of-bridges.line :as line]))
 
-;;; TODO: Make this whole module less kludgy
-
 (def master-scale 40)
 (def text-scale 0.5)
 (def text-bump 0.05)
@@ -128,7 +126,7 @@
 ;;; ...
 ;;; Not really sure where to put this, but it took up
 ;;; too much space in core. Can probably just get rid
-;;; of this if we switch to JavaScript / ClojureScript.
+;;; of this if we switch to ClojureScript.
 
 (defn menu [title & items]
   (let [margin 1
