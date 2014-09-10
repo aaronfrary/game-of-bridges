@@ -3,6 +3,7 @@
             [game-of-bridges.line :as line]))
 
 (def master-scale 40)
+(def minimum-screen-size 10)
 (def text-scale 0.5)
 (def text-bump 0.05)
 (def island-scale 1)
@@ -40,7 +41,9 @@
 (defn get-mouse [] (mouse->coord {:x (mouse-x) :y (mouse-y)}))
 
 (defn puzzle-max [dim islands]
-  (->> islands (map dim) (apply max) (inc) (coord->px)))
+  (if (seq islands)
+    (->> islands (map dim) (apply max) (inc) (coord->px))
+    (coord->px minimum-screen-size)))
 
 (defn puzzle-size [islands]
   [(puzzle-max :x islands) (puzzle-max :y islands)])

@@ -39,8 +39,20 @@
 
 (declare -main game-draw game-click)
 
-(defn new-game [new-islands]
-  {:screen {:draw game-draw, :click game-click}
+(defn new-game-screen [title]
+  (let [puzzle-names (take 5 (io/puzzle-dir))]
+    (->> puzzle-names
+         (map #(fn [] (q/exit) (-main (io/read-puzzle %))))
+         (map vector (map io/strip-name puzzle-names)) ; (map vector %) == (zip %)
+         (reverse)
+         (cons ["No thanks!" q/exit])
+         (reverse)
+         (apply (partial g/menu title)))))
+
+(defn reset-game [new-islands]
+  {:screen (if (seq new-islands)
+             {:draw game-draw, :click game-click}
+             (new-game-screen "Choose a puzzle to start:"))
    :islands new-islands
    :bridges []
    :source nil
@@ -50,15 +62,7 @@
 
 (defn check-game-won [state]
   (if (l/game-won? state)
-    (let [puzzle-names (take 5 (io/puzzle-dir))]
-      (->> puzzle-names
-           (map #(fn [] (q/exit) (-main %)))
-           (map vector (map io/strip-name puzzle-names)) ; (map vector %) == (zip %)
-           (reverse)
-           (cons ["No thanks!" q/exit])
-           (reverse)
-           (apply (partial g/menu "Correct! Play again?"))
-           (assoc state :screen)))
+    (assoc state :screen (new-game-screen "Correct! Play again?"))
     state))
 
 (defn track-source-island
@@ -106,31 +110,27 @@
 (defn solve [state]
   (assoc state :solve true))
 
-(defn -main [& args]
-  (if-let [file-name (first args)]
-    (let [islands (io/read-puzzle file-name)]
-      (q/sketch
-        :title "Game of Bridges"
-        :middleware [qm/fun-mode]
-        :setup (fn [] (g/setup islands) (new-game islands))
-        :draw (fn [state] ((get-in state [:screen :draw]) state))
-        :update (fn [state] (if (:solve state)
-                              (if-let [b (s/next-move state)]
-                                (update-in state [:bridges] l/add-bridge b) 
-                                (assoc state :solve false))
-                              state))
-        :mouse-moved track-source-island
-        :mouse-released (fn [state event]
-                          ((get-in state [:screen :click]) state event))
-        :key-typed (fn [state event]
-                     (case (:key event)
-                       :h (hint state)
-                       :s (solve state)
-                       state))
-        :size (g/puzzle-size islands))
-      :ok)
-    :TODO-help-text))
-
-(defn -test-run []
-  (-main "resources/puzzles/test-puzzle-1.txt"))
+(defn -main
+  ([] (-main []))
+  ([islands]
+   (q/sketch
+     :title "Game of Bridges"
+     :middleware [qm/fun-mode]
+     :setup (fn [] (g/setup islands) (reset-game islands))
+     :draw (fn [state] ((get-in state [:screen :draw]) state))
+     :update (fn [state] (if (:solve state)
+                           (if-let [b (s/next-move state)]
+                             (update-in state [:bridges] l/add-bridge b) 
+                             (assoc state :solve false))
+                           state))
+     :mouse-moved track-source-island
+     :mouse-released (fn [state event]
+                       ((get-in state [:screen :click]) state event))
+     :key-typed (fn [state event]
+                  (case (:key event)
+                    :h (hint state)
+                    :s (solve state)
+                    state))
+     :size (g/puzzle-size islands))
+   :ok))
 
