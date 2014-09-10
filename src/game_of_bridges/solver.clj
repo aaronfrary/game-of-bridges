@@ -36,6 +36,22 @@
        (remove #(l/isolating? (update-in state [:bridges] l/merge-bridges %)))
        (intersect-bridges)))
 
+(defn required-8s [state]
+  (let [centers (filter #(= (:num %) 8) (:islands state))
+        neighbors (map #(l/neighbors % state) centers)]
+    (mapcat (fn [c nbs] (map #(-> {:fst c :snd % :num 1}) nbs))
+         centers neighbors)))
+
+(defn required-7s [state]
+  (let [centers (filter #(= (:num %) 7) (:islands state))
+        neighbors (map #(l/neighbors % state) centers)]
+    (mapcat (fn [c nbs]
+              (keep #(when (not (l/bridge-between state c %))
+                      {:fst c :snd % :num 1}) nbs))
+         centers neighbors)))
+
 (defn next-move [state]
-  (first (mapcat (partial required-moves state) (:islands state))))
+  (or (first (required-8s state))
+      (first (required-7s state))
+      (first (mapcat (partial required-moves state) (:islands state)))))
 
