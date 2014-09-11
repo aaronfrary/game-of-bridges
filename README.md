@@ -3,6 +3,8 @@ Bridges
 
 Download the game here: http://aaronsgh.com/download/bridges.zip
 
+---
+
 Bridges is a logic puzzle played on a rectangular grid of any size. Each puzzle
 is defined by its configuration of "islands" - grid cells each with an assigned
 capacity between 1 and 8 inclusive. A player must draw "bridges" between the
@@ -67,8 +69,8 @@ provide a benefit in terms of speed, but it guarantees that even in difficult
 scenarios that require the connection rule to solve, the algorithm will find a
 next move that is *required* by the current game state.  In contrast,
 elimination search would find a random move that happens to be part of some
-solution to the puzzle.  Additionally, the removal of brute force search makes
-for a much more elegant algorithm.
+solution to the puzzle.  I like to think the removal of brute force search
+makes for a much more elegant algorithm.
 
 ### Disclaimer
 
