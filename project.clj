@@ -1,4 +1,4 @@
-(defproject game-of-bridges "0.1.0-SNAPSHOT"
+(defproject game-of-bridges "1.0.0-RELEASE"
   :description "Bridges, the logic puzzle game"
   :url "https://github.com/aaronsgh/game-of-bridges"
   :license {:name "GNU General Public License"
