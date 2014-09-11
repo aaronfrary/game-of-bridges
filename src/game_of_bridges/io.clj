@@ -21,7 +21,7 @@
        (flatten)))
 
 (defn puzzle-dir
-  ([] (puzzle-dir "resources/puzzles/"))
+  ([] (puzzle-dir "puzzles/"))
   ([dir-name]
    (->> (clojure.java.io/file dir-name)
         (file-seq)
