@@ -137,7 +137,7 @@
         s-height (px->coord (height))
         menu-width (- s-width  (* margin 2))
         menu-height (+ (count items) 2) #_(- s-height (* margin 2))
-        x-center (round (/ s-width 2))]
+        x-center (/ s-width 2)]
     {:draw (fn [state]
              (draw-menu-box margin menu-width menu-height)
              (draw-text title x-center (inc margin))
