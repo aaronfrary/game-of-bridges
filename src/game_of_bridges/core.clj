@@ -112,7 +112,7 @@
 
 (defn -main
   ([] (-main []))
-  ([islands]
+  ([islands & args]
    (q/sketch
      :title "Game of Bridges"
      :middleware [qm/fun-mode]
