@@ -1,7 +1,7 @@
 Bridges
 =======
 
-Download the game here: http://aaronsgh.com/download/bridges.zip
+Download the game here: https://github.com/aaronsgh/game-of-bridges/archive/download.zip
 
 ---
 
@@ -93,6 +93,6 @@ References
 License
 -------
 
-Copyright © 2014 Aaron Graham-Horowitz
+Copyright © 2015 Aaron Graham-Horowitz
 
 Distributed under the GNU General Public License version 3.
