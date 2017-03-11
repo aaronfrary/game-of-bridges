@@ -1,7 +1,7 @@
 Bridges
 =======
 
-Download the game here: https://github.com/aaronsgh/game-of-bridges/archive/download.zip
+Download the game here: https://github.com/aaronfrary/game-of-bridges/archive/download.zip
 
 ---
 
@@ -76,13 +76,13 @@ makes for a much more elegant algorithm `:)`
 
 I have made no attempt to systematically test this code on a wide variety of
 puzzles.  If you find puzzles that are not handled properly, feel free to
-[contact me] (http://aaronsgh.com) with feedback and/or suggestions.
+[contact me] (http://www.aaronfrary.com) with feedback and/or suggestions.
 
 References
 ----------
 
 - Conceptis Puzzles.  Hashi techniques.
-  [[link] (www.conceptispuzzles.com/index.aspx?uri=puzzle/hashi/techniques)]
+  [[link] (http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hashi/techniques)]
 
 - Yen, Shi-Jim, et al.
   Elimination Search for puzzle games: An Application for Hashi Solver,
