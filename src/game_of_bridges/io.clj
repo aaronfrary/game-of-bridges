@@ -11,7 +11,8 @@
     (map-indexed
       (fn [x c]
         (when-let [n (bridges-number c)]
-          {:x (inc x) :y (inc y) :num n}))
+          ;; increase y to leave room for toolbar
+          {:x (+ x 1) :y (+ y 3) :num n}))
       s)))
 
 (defn read-puzzle [file-name]

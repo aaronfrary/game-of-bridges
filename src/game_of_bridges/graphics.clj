@@ -2,17 +2,18 @@
   (:require [quil.core :refer :all]
             [game-of-bridges.line :as line]))
 
-(def master-scale 40)
+(def master-scale 32)
 (def minimum-screen-size 10)
 (def text-scale 0.5)
 (def text-bump 0.05)
 (def island-scale 1)
-(def island-hi-scale 1.15)
+(def hi-scale 1.15)
 (def bridge-weight 2)
 (def bridge-hi-weight 8)
 (def double-bridge-hi-weight 13)
 (def double-bridge-sep 6)
 (def menu-item-hi-weight 26)
+(def toolbar-height (* master-scale 2))
 
 (defn bg-color []        (color 50))
 (defn fg-color []        (color 255))
@@ -20,6 +21,9 @@
 (defn island-hi-color [] (color 120 120 180))
 (defn bridge-hi-color [] (color 60 60 180))
 (defn success-color []   (color 100 220 40))
+(defn toolbar-color []   (color 80))
+(defn button-hi-color [] (color 175))
+(def button-color    accent-color)
 (def island-color    fg-color)
 (def line-color      accent-color)
 (def bridge-color    line-color)
@@ -79,11 +83,11 @@
 
 (defn hilight-island [{:keys [x y]}]
   (with-style (fill (island-hi-color))
-    (circle x y island-hi-scale)))
+    (circle x y hi-scale)))
 
 (defn hilight-full-island [{:keys [x y]}]
   (with-style (fill (success-color))
-    (circle x y island-hi-scale)))
+    (circle x y hi-scale)))
 
 (defn line-function-factory [line-fn color thickness]
   (fn [{{x1 :x y1 :y} :fst {x2 :x y2 :y} :snd}]
@@ -124,6 +128,28 @@
 (defn hilight-menu-item [x y w]
   ((line-function-factory line success-color menu-item-hi-weight)
      (line/line (- x (/ w 2) -1) y (+ x (/ w 2) -1) y)))
+
+;;; Like the menu below, this toolbar is just sort of hacked together,
+;;; since the user interface isn't the most important part of this
+;;; project.
+
+(defn on-hint-button? [{:keys [x y]}]
+  (and (= y 1) (<= 1 x 3)))
+
+(defn on-solve-button? [{:keys [x y]}]
+  (and (= y 1) (<= 4 x 6)))
+
+(defn draw-toolbar []
+  (let [mouse (get-mouse)
+        hint-color (if (on-hint-button? mouse) button-hi-color button-color)
+        solve-color (if (on-solve-button? mouse) button-hi-color button-color)]
+    (with-style (fill (toolbar-color))
+      (stroke (accent-color)) (stroke-weight bridge-weight)
+      (rect 0 0 (width) toolbar-height))
+    (with-style (fill (hint-color))
+      (to-scale rect 1 0.5 2 1) (draw-text "Hint" 2 1))
+    (with-style (fill (solve-color))
+      (to-scale rect 4 0.5 2 1) (draw-text "Solve" 5 1))))
 
 ;;; Menus!
 ;;; ...

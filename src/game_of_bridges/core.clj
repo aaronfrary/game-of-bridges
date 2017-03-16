@@ -73,6 +73,18 @@
                                  (l/get-target state (g/mouse->coord mouse)))
           :else state)))
 
+(defn hint [state]
+  (assoc state :hint (if (:hint state) nil
+                       (s/next-move state))))
+
+(defn solve [state]
+  (assoc state :solve true))
+
+(defn resolve-toolbar-click [state mouse]
+  (cond (g/on-hint-button? mouse) (hint state)
+        (g/on-solve-button? mouse) (solve state)
+        :else state))
+
 (defn game-click
   [{:keys [source target hint] :as state}, mouse]
   (let [m (g/mouse->coord mouse)]
@@ -82,6 +94,7 @@
                           (l/get-bridge-at (assoc state :bridges [hint]) m)
                           (and source target {:fst source :snd target})]))
         (assoc :hint nil)
+        (resolve-toolbar-click m)
         (check-game-won))))
 
 (defn game-draw
@@ -90,6 +103,7 @@
         island (l/get-island-at state mouse)
         bridge (l/get-bridge-at (update-in state [:bridges] conj hint) mouse)]
     (g/clear-screen)
+    (g/draw-toolbar)
     ;; Conditional hilighting
     (when hint (g/hilight-hint hint))
     (cond bridge (g/hilight-bridge bridge)
@@ -103,13 +117,6 @@
     (doseq [b bridges] (g/draw-bridge b))
     (doseq [i islands] (g/draw-island i))))
 
-(defn hint [state]
-  (assoc state :hint (if (:hint state) nil
-                       (s/next-move state))))
-
-(defn solve [state]
-  (assoc state :solve true))
-
 (defn -main
   ([] (-main []))
   ([islands & args]
@@ -120,7 +127,7 @@
      :draw (fn [state] ((get-in state [:screen :draw]) state))
      :update (fn [state] (if (:solve state)
                            (if-let [b (s/next-move state)]
-                             (update-in state [:bridges] l/add-bridge b) 
+                             (update-in state [:bridges] l/add-bridge b)
                              (assoc state :solve false))
                            state))
      :mouse-moved track-source-island
