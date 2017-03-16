@@ -4,7 +4,7 @@
   :license {:name "GNU General Public License"
             :url "http://www.gnu.org/copyleft/gpl.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [quil "2.2.0"]]
+                 [quil "2.2.0" :exclusions [org.clojure/clojure]]]
   :main ^:skip-aot game-of-bridges.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
