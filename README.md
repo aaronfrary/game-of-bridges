@@ -76,19 +76,19 @@ makes for a much more elegant algorithm `:)`
 
 I have made no attempt to systematically test this code on a wide variety of
 puzzles.  If you find puzzles that are not handled properly, feel free to
-[contact me] (http://www.aaronfrary.com) with feedback and/or suggestions.
+[contact me](http://www.aaronfrary.com) with feedback and/or suggestions.
 
 References
 ----------
 
 - Conceptis Puzzles.  Hashi techniques.
-  [[link] (http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hashi/techniques)]
+  [[link](http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hashi/techniques)]
 
 - Yen, Shi-Jim, et al.
   Elimination Search for puzzle games: An Application for Hashi Solver,
   in *IEEE International Conference on Fuzzy Systems (FUZZ)*,
   June 27-30, 2011, Taipei, Taiwan, 185-189. IEEE.
-  [[link] (http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6007662)]
+  [[link](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6007662)]
 
 License
 -------
