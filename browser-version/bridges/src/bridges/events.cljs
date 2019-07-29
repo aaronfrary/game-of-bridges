@@ -7,4 +7,4 @@
 (re-frame/reg-event-db
  ::initialize-db
  (fn [_ _]
-   db/default-db))
+   (db/reset-db db/default-puzzle)))

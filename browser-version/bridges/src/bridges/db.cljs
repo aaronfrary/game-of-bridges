@@ -1,7 +1,44 @@
 (ns bridges.db)
 
-(def default-db
-  {:board
-   {:size {:width 10 :height 10}
-    :islands [{:x 0 :y 0 :num 2} {:x 9 :y 0 :num 2} {:x 0 :y 9 :num 2} {:x 9 :y 9 :num 2}]
-    :bridges []}})
+(defn bridges-number [c]
+  (case c
+    \1 1 \2 2 \3 3 \4 4
+    \5 5 \6 6 \7 7 \8 8
+    nil))
+
+(defn str->islands [y s]
+  (filter identity
+    (map-indexed
+      (fn [x c]
+        (when-let [n (bridges-number c)]
+          {:x x :y y :num n}))
+      s)))
+
+(defn read-puzzle [s]
+  (->> s
+       (clojure.string/trim)
+       (clojure.string/split-lines)
+       (map-indexed str->islands)
+       (flatten)))
+
+(defn puzzle-size [islands]
+  {:width (->> islands (map :x) (apply max) (inc))
+   :height (->> islands (map :y) (apply max) (inc))})
+
+(def default-puzzle
+"
+3.4...3..
+.........
+.........
+5..5..5.2
+.........
+2..1.....
+.1....3.2
+")
+
+(defn reset-db [puzzle]
+  (let [islands (read-puzzle puzzle)]
+    {:board
+     {:size (puzzle-size islands)
+      :islands islands
+      :bridges []}}))
