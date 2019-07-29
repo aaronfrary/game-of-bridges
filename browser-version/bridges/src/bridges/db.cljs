@@ -1,5 +1,19 @@
 (ns bridges.db)
 
+;;; Data Structures:
+;;;
+;;; island := { :x <int>
+;;;             :y <int>
+;;;             :num <int> }
+;;;
+;;; bridge := { :fst <island>
+;;;             :snd <island>
+;;;             :num <int> }
+;;;
+;;;   N.B.
+;;;     islands implement the "point" interface: { :x <int>, :y <int> }
+;;;     bridges implement the "line" interface: { :fst <point>, :snd <point> }
+
 (defn bridges-number [c]
   (case c
     \1 1 \2 2 \3 3 \4 4
