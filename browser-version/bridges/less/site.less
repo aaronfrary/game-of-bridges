@@ -17,46 +17,47 @@
 .bridge {
     position: absolute;
 
-    .inner {
+    .line {
         position: absolute;
     }
 
     &.vertical {
         width: 27px;
 
-        .inner-1 {
+        .line {
             top: 0;
             bottom: 0;
-            left: 13px;
-            width: 0;
-            border-left: 2px solid gray;
-        }
-        .inner-2 {
-            top: 0;
-            bottom: 0;
-            left: 10px;
-            width: 4px;
-            border-left: 2px solid gray;
-            border-right: 2px solid gray;
+            &-x1 {
+                left: 13px;
+                width: 0;
+                border-left: 2px solid gray;
+            }
+            &-x2 {
+                left: 10px;
+                width: 4px;
+                border-left: 2px solid gray;
+                border-right: 2px solid gray;
+            }
         }
     }
+
     &.horizontal {
         height: 27px;
 
-        .inner-1 {
+        .line {
             left: 0;
             right: 0;
-            top: 13px;
-            height: 0;
-            border-top: 2px solid gray;
-        }
-        .inner-2 {
-            left: 0;
-            right: 0;
-            top: 10px;
-            height: 4px;
-            border-top: 2px solid gray;
-            border-bottom: 2px solid gray;
+            &-x1 {
+                top: 13px;
+                height: 0;
+                border-top: 2px solid gray;
+            }
+            &-x2 {
+                top: 10px;
+                height: 4px;
+                border-top: 2px solid gray;
+                border-bottom: 2px solid gray;
+            }
         }
     }
 }

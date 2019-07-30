@@ -37,14 +37,14 @@
    {:style {:left (coord->px (:x fst))
             :top (coord->px (+ (min (:y fst) (:y snd)) 0.5))
             :height (coord->px (abs (- (:y fst) (:y snd))))}}
-   [:div {:class (str "inner inner-" num)}]])
+   [:div {:class (str "line line-x" num)}]])
 
 (defn h-bridge [{:keys [fst snd num]}]
   [:div.bridge.horizontal
    {:style {:left (coord->px (+ (min (:x fst) (:x snd)) 0.5))
             :top (coord->px (:y fst))
             :width (coord->px (abs (- (:x fst) (:x snd))))}}
-   [:div {:class (str "inner inner-" num)}]])
+   [:div {:class (str "line line-x" num)}]])
 
 (defn make-bridge [b]
   ^{:key (bridge->key b)} [(if (line/vertical? b) v-bridge h-bridge) b])
