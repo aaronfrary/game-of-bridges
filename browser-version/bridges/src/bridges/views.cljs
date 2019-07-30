@@ -23,6 +23,15 @@
 (defn bridge->key [{:keys [fst snd]}]
   (str (island->key fst) "::" (island->key snd)))
 
+(defn bridge-style [{:keys [fst snd] :as b}]
+  (if (line/vertical? b)
+    {:left (coord->px (:x fst))
+     :top (coord->px (+ (min (:y fst) (:y snd)) 0.5))
+     :height (coord->px (abs (- (:y fst) (:y snd))))}
+    {:left (coord->px (+ (min (:x fst) (:x snd)) 0.5))
+     :top (coord->px (:y fst))
+     :width (coord->px (abs (- (:x fst) (:x snd))))}))
+
 
 ;;; Components
 
@@ -36,26 +45,15 @@
 (defn make-island [i]
   ^{:key (island->key i)} [island i])
 
-(defn v-bridge [{:keys [fst snd num] :as b}]
-  [:div.bridge.vertical
-   {:style {:left (coord->px (:x fst))
-            :top (coord->px (+ (min (:y fst) (:y snd)) 0.5))
-            :height (coord->px (abs (- (:y fst) (:y snd))))}
-    :on-click #(re-frame/dispatch [::events/inc-bridge b])}
-   [:div.highlight-target]
-   [:div {:class (str "line line-x" num)}]])
-
-(defn h-bridge [{:keys [fst snd num] :as b}]
-  [:div.bridge.horizontal
-   {:style {:left (coord->px (+ (min (:x fst) (:x snd)) 0.5))
-            :top (coord->px (:y fst))
-            :width (coord->px (abs (- (:x fst) (:x snd))))}
-    :on-click #(re-frame/dispatch [::events/inc-bridge b])}
+(defn bridge [{:keys [fst snd num] :as b}]
+  [:div {:class (str "bridge " (if (line/vertical? b) "vertical" "horizontal"))
+         :style (bridge-style b)
+         :on-click #(re-frame/dispatch [::events/inc-bridge b])}
    [:div.highlight-target]
    [:div {:class (str "line line-x" num)}]])
 
 (defn make-bridge [b]
-  ^{:key (bridge->key b)} [(if (line/vertical? b) v-bridge h-bridge) b])
+  ^{:key (bridge->key b)} [bridge b])
 
 (defn islands []
   (let [islands @(re-frame/subscribe [::subs/islands])]
