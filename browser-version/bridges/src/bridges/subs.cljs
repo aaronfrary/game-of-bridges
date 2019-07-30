@@ -1,6 +1,11 @@
 (ns bridges.subs
   (:require
-   [re-frame.core :as re-frame]))
+   [re-frame.core :as re-frame]
+   [bridges.logic :as l]
+   ))
+
+
+;;; Simple subscriptions (re-frame Layer 2)
 
 (re-frame/reg-sub
   ::board-size
@@ -16,3 +21,13 @@
   ::bridges
   (fn [db]
     (get-in db [:board :bridges])))
+
+
+;;; Computed subscriptions (re-frame Layer 3)
+
+(re-frame/reg-sub
+  ::full-islands
+  :<- [::islands]
+  :<- [::bridges]
+  (fn [[islands bridges] _]
+    (filter (partial l/full? bridges) islands)))

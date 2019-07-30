@@ -25,9 +25,12 @@
 
 ;;; Components
 
-(defn island [{:keys [x y num]}]
-  [:div.island {:style {:left (coord->px x) :top (coord->px y)}}
-   num])
+(defn island [{:keys [x y num] :as i}]
+  (let [full-islands @(re-frame/subscribe [::subs/full-islands])
+        full-class (if (some #(= % i) full-islands) " island-full" "")]
+    [:div {:class (str "island" full-class)
+           :style {:left (coord->px x) :top (coord->px y)}}
+     num]))
 
 (defn make-island [i]
   ^{:key (island->key i)} [island i])
