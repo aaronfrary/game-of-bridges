@@ -8,3 +8,10 @@
  ::initialize-db
  (fn [_ _]
    (db/reset-db db/default-puzzle)))
+
+(re-frame/reg-event-db
+ ::inc-bridge
+ [(re-frame/path :board)]
+ (fn [board [_ bridge]]
+   (println "bridge clicked: " bridge)
+   board))
