@@ -16,8 +16,13 @@
 
 .bridge {
     position: absolute;
+    cursor: pointer;
 
     .line {
+        position: absolute;
+    }
+
+    .highlight-target {
         position: absolute;
     }
 
@@ -39,6 +44,13 @@
                 border-right: 2px solid gray;
             }
         }
+
+        .highlight-target {
+            top: 0;
+            bottom: 0;
+            left: 6px;
+            width: 16px;
+        }
     }
 
     &.horizontal {
@@ -58,6 +70,19 @@
                 border-top: 2px solid gray;
                 border-bottom: 2px solid gray;
             }
+        }
+
+        .highlight-target {
+            left: 0;
+            right: 0;
+            top: 6px;
+            height: 16px;
+        }
+    }
+
+    &:hover {
+        .highlight-target {
+            background-color: Lavender;
         }
     }
 }

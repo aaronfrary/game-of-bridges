@@ -37,6 +37,7 @@
    {:style {:left (coord->px (:x fst))
             :top (coord->px (+ (min (:y fst) (:y snd)) 0.5))
             :height (coord->px (abs (- (:y fst) (:y snd))))}}
+   [:div.highlight-target]
    [:div {:class (str "line line-x" num)}]])
 
 (defn h-bridge [{:keys [fst snd num]}]
@@ -44,6 +45,7 @@
    {:style {:left (coord->px (+ (min (:x fst) (:x snd)) 0.5))
             :top (coord->px (:y fst))
             :width (coord->px (abs (- (:x fst) (:x snd))))}}
+   [:div.highlight-target]
    [:div {:class (str "line line-x" num)}]])
 
 (defn make-bridge [b]
