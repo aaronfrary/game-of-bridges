@@ -2,6 +2,7 @@
   (:require
    [re-frame.core :as re-frame]
    [bridges.db :as db]
+   [bridges.logic :as l]
    ))
 
 (re-frame/reg-event-db
@@ -10,8 +11,7 @@
    (db/reset-db db/default-puzzle)))
 
 (re-frame/reg-event-db
- ::inc-bridge
+ ::add-bridge
  [(re-frame/path :board)]
  (fn [board [_ bridge]]
-   (println "bridge clicked: " bridge)
-   board))
+   (update-in board [:bridges] l/add-bridge bridge)))

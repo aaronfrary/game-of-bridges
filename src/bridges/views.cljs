@@ -48,7 +48,7 @@
 (defn bridge [{:keys [fst snd num] :as b}]
   [:div {:class (str "bridge " (if (line/vertical? b) "vertical" "horizontal"))
          :style (bridge-style b)
-         :on-click #(re-frame/dispatch [::events/inc-bridge b])}
+         :on-click #(re-frame/dispatch [::events/add-bridge b])}
    [:div.highlight-target]
    [:div {:class (str "line line-x" num)}]])
 
