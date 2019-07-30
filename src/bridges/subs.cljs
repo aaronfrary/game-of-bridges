@@ -41,3 +41,12 @@
   :<- [::bridges]
   (fn [[islands bridges] _]
     (filter (partial l/full? bridges) islands)))
+
+(re-frame/reg-sub
+  ::potential-bridges
+  :<- [::islands]
+  :<- [::bridges]
+  :<- [::source-island]
+  (fn [[islands bridges source] _]
+    (map #(identity {:fst source :snd % :num 0})
+         (l/neighbors source bridges islands))))

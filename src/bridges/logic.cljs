@@ -1,5 +1,8 @@
 (ns bridges.logic
-  (:require [bridges.util :as util]))
+  (:require
+   [bridges.util :as util]
+   [bridges.line :as line]
+   ))
 
 (defn canonical-bridge [{:keys [fst snd num] :as bridge}]
   (if (util/str< snd fst) {:fst snd :snd fst :num num} bridge))
@@ -21,6 +24,21 @@
 
 (defn full? [bridges island]
   (= (num-occupied bridges island) (:num island)))
+
+(defn can-add-bridge? [bridges island-1 island-2]
+  (not (or (full? bridges island-1)
+           (full? bridges island-2)
+           (case (:num (bridge-between bridges island-1 island-2))
+             2 true, 1 false
+             nil (line/get-blocked bridges island-1 island-2)))))
+
+(defn neighbors
+  "Return islands to which a bridge to `island' can be added."
+  [island bridges islands]
+  (if (full? bridges island) []
+    (->> [:up :down :left :right]
+         (keep #(util/get-item % island islands))
+         (filter (partial can-add-bridge? bridges island)))))
 
 (defn force-add-bridge [bridges bridge]
   (conj (remove (partial bridge= bridge) bridges)

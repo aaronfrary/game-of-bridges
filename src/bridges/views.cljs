@@ -66,10 +66,15 @@
   (let [bridges @(re-frame/subscribe [::subs/bridges])]
     [:<> (map make-bridge bridges)]))
 
+(defn potential-bridges []
+  (let [bridges @(re-frame/subscribe [::subs/potential-bridges])]
+    [:<> (map make-bridge bridges)]))
+
 (defn game-board []
   (let [{:keys [width height]} @(re-frame/subscribe [::subs/board-size])]
     [:div#game-board {:style {:width (coord->px width) :height (coord->px height)}}
      [bridges]
+     [potential-bridges]
      [islands]]))
 
 (defn main-panel []
