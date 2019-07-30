@@ -48,5 +48,6 @@
   :<- [::bridges]
   :<- [::source-island]
   (fn [[islands bridges source] _]
-    (map #(identity {:fst source :snd % :num 0})
-         (l/neighbors source bridges islands))))
+    (->> (l/neighbors source bridges islands)
+         (map #(identity {:fst source :snd % :num 0}))
+         (filter #(not-any? (partial l/bridge= %) bridges)))))
