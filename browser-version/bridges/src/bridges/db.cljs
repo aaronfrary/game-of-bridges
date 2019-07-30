@@ -55,4 +55,5 @@
     {:board
      {:size (puzzle-size islands)
       :islands islands
-      :bridges []}}))
+      :bridges [{:fst {:x 3 :y 3 :num 5} :snd {:x 3 :y 5 :num 1} :num 1}
+                {:fst {:x 6 :y 3 :num 5} :snd {:x 8 :y 3 :num 2} :num 2}]}}))

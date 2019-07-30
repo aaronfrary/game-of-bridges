@@ -11,3 +11,8 @@
   ::islands
   (fn [db]
     (get-in db [:board :islands])))
+
+(re-frame/reg-sub
+  ::bridges
+  (fn [db]
+    (get-in db [:board :bridges])))
