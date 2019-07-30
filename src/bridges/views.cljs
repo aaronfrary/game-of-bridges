@@ -42,7 +42,8 @@
         selected-class (if (or (= source-island i) (= target-island i)) " island-selected" "")
         full-class (if (some #(= % i) full-islands) " island-full" "")]
     [:div {:class (str "island" selected-class full-class)
-           :style {:left (coord->px x) :top (coord->px y)}}
+           :style {:left (coord->px x) :top (coord->px y)}
+           :on-mouse-over #(re-frame/dispatch [::events/set-source-island i])}
      num]))
 
 (defn make-island [i]

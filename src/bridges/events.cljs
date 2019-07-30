@@ -11,6 +11,12 @@
    (db/reset-db db/default-puzzle)))
 
 (re-frame/reg-event-db
+ ::set-source-island
+ [(re-frame/path :board)]
+ (fn [board [_ island]]
+   (assoc board :source-island island)))
+
+(re-frame/reg-event-db
  ::add-bridge
  [(re-frame/path :board)]
  (fn [board [_ bridge]]
