@@ -36,9 +36,12 @@
 ;;; Components
 
 (defn island [{:keys [x y num] :as i}]
-  (let [full-islands @(re-frame/subscribe [::subs/full-islands])
+  (let [source-island @(re-frame/subscribe [::subs/source-island])
+        target-island @(re-frame/subscribe [::subs/target-island])
+        full-islands @(re-frame/subscribe [::subs/full-islands])
+        selected-class (if (or (= source-island i) (= target-island i)) " island-selected" "")
         full-class (if (some #(= % i) full-islands) " island-full" "")]
-    [:div {:class (str "island" full-class)
+    [:div {:class (str "island" selected-class full-class)
            :style {:left (coord->px x) :top (coord->px y)}}
      num]))
 
