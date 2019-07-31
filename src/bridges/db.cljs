@@ -31,7 +31,6 @@
 
 (defn read-puzzle [s]
   (->> s
-       (clojure.string/trim)
        (clojure.string/split-lines)
        (map-indexed str->islands)
        (flatten)))
@@ -44,7 +43,7 @@
 
 (defn reset-db [puzzle-string]
   (let [islands (read-puzzle puzzle-string)]
-    {:puzzle-string (clojure.string/trim puzzle-string)
+    {:puzzle-string puzzle-string
      :board {:size (puzzle-size islands)
              :islands islands
              :bridges []
