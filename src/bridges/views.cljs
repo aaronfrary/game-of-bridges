@@ -83,7 +83,8 @@
     [:div#puzzle-status (when solved "Puzzle solved!")]))
 
 (defn main-panel []
-  [:div
-   [:h1 "Bridges"]
-   [game-board]
-   [puzzle-status]])
+  [:div#main-panel
+   [:div#board-panel
+    [:h1 "Bridges"]
+    [game-board]
+    [puzzle-status]]])
