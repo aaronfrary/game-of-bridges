@@ -3,6 +3,7 @@
    [re-frame.core :as re-frame]
    [bridges.subs :as subs]
    [bridges.events :as events]
+   [bridges.puzzles :as puzzles]
    [bridges.line :as line]
    ))
 
@@ -82,9 +83,25 @@
   (let [solved @(re-frame/subscribe [::subs/game-won])]
     [:div#puzzle-status (when solved "Puzzle solved!")]))
 
+(defn puzzle-select-button [puzzle-string text]
+  [:button.puzzle-select
+   {:on-click #(re-frame/dispatch [::events/select-puzzle puzzle-string])}
+   text])
+
+(defn puzzle-input []
+  (let [puzzle-string @(re-frame/subscribe [::subs/puzzle-string])]
+  [:textarea#puzzle-input {:value puzzle-string}]))
+
 (defn main-panel []
   [:div#main-panel
-   [:div#board-panel
-    [:h1 "Bridges"]
-    [game-board]
-    [puzzle-status]]])
+   [:h1 "Bridges"]
+   [:div#wrapper
+    [:div#board-panel
+     [game-board]
+     [puzzle-status]]
+    [:div#puzzle-select-panel
+     [:h2 "Select a puzzle"]
+     [puzzle-select-button puzzles/example-9x7 "Example 9x7 Puzzle"]
+     [puzzle-select-button puzzles/example-10x10 "Example 10x10 Puzzle"]
+     [puzzle-select-button puzzles/example-25x25 "Example 25x25 Puzzle"]
+     [puzzle-input]]]])

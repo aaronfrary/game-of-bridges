@@ -1,4 +1,5 @@
-(ns bridges.db)
+(ns bridges.db
+  (:require [bridges.puzzles :as puzzles]))
 
 ;;; Data Structures:
 ;;;
@@ -39,22 +40,13 @@
   {:width (->> islands (map :x) (apply max) (inc))
    :height (->> islands (map :y) (apply max) (inc))})
 
-(def default-puzzle
-"
-3.4...3..
-.........
-.........
-5..5..5.2
-.........
-2..1.....
-.1....3.2
-")
+(def default-puzzle puzzles/example-10x10)
 
-(defn reset-db [puzzle]
-  (let [islands (read-puzzle puzzle)]
-    {:board
-     {:size (puzzle-size islands)
-      :islands islands
-      :bridges []
-      :source-island nil
-      :target-island nil}}))
+(defn reset-db [puzzle-string]
+  (let [islands (read-puzzle puzzle-string)]
+    {:puzzle-string puzzle-string
+     :board {:size (puzzle-size islands)
+             :islands islands
+             :bridges []
+             :source-island nil
+             :target-island nil}}))

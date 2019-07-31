@@ -8,6 +8,11 @@
 ;;; Simple subscriptions (re-frame Layer 2)
 
 (re-frame/reg-sub
+  ::puzzle-string
+  (fn [db]
+    (:puzzle-string db)))
+
+(re-frame/reg-sub
   ::board-size
   (fn [db]
     (get-in db [:board :size])))

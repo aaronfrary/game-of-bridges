@@ -11,6 +11,11 @@
    (db/reset-db db/default-puzzle)))
 
 (re-frame/reg-event-db
+  ::select-puzzle
+  (fn [_ [_ puzzle-string]]
+    (db/reset-db puzzle-string)))
+
+(re-frame/reg-event-db
  ::set-source-island
  [(re-frame/path :board)]
  (fn [board [_ island]]
