@@ -89,9 +89,12 @@
    text])
 
 (defn puzzle-input []
-  (let [puzzle-string @(re-frame/subscribe [::subs/puzzle-string])
-        {:keys [width height]} @(re-frame/subscribe [::subs/board-size])]
-    [:textarea#puzzle-input {:value puzzle-string :rows (max height 12) :cols (max width 24)}]))
+  (let [{:keys [width height]} @(re-frame/subscribe [::subs/board-size])]
+    [:textarea#puzzle-input
+     {:value @(re-frame/subscribe [::subs/puzzle-string])
+      :on-change #(re-frame/dispatch [::events/puzzle-input-change (-> % .-target .-value)])
+      :rows (max height 12)
+      :cols (max width 24)}]))
 
 (defn main-panel []
   [:div#main-panel

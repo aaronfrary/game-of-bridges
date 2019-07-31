@@ -21,6 +21,11 @@
     (db/reset-db (:puzzle-string db))))
 
 (re-frame/reg-event-db
+  ::puzzle-input-change
+  (fn [db [_ new-string]]
+    (assoc db :puzzle-string new-string)))
+
+(re-frame/reg-event-db
  ::set-source-island
  [(re-frame/path :board)]
  (fn [board [_ island]]
