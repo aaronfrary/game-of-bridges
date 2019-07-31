@@ -51,3 +51,10 @@
     (->> (l/neighbors source bridges islands)
          (map #(identity {:fst source :snd % :num 0}))
          (filter #(not-any? (partial l/bridge= %) bridges)))))
+
+(re-frame/reg-sub
+  ::game-won
+  :<- [::islands]
+  :<- [::bridges]
+  (fn [[islands bridges] _]
+    (l/game-won? islands bridges)))

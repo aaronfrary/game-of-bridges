@@ -78,7 +78,12 @@
      [potential-bridges]
      [islands]]))
 
+(defn puzzle-status []
+  (let [solved @(re-frame/subscribe [::subs/game-won])]
+    [:div#puzzle-status (if solved "Puzzle solved!" "")]))
+
 (defn main-panel []
   [:div
    [:h1 "Bridges"]
-   [game-board]])
+   [game-board]
+   [puzzle-status]])
