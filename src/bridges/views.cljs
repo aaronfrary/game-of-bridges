@@ -89,8 +89,9 @@
    text])
 
 (defn puzzle-input []
-  (let [puzzle-string @(re-frame/subscribe [::subs/puzzle-string])]
-  [:textarea#puzzle-input {:value puzzle-string}]))
+  (let [puzzle-string @(re-frame/subscribe [::subs/puzzle-string])
+        {:keys [width height]} @(re-frame/subscribe [::subs/board-size])]
+    [:textarea#puzzle-input {:value puzzle-string :rows height :cols width}]))
 
 (defn main-panel []
   [:div#main-panel
