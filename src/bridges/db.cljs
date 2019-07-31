@@ -44,7 +44,7 @@
 
 (defn reset-db [puzzle-string]
   (let [islands (read-puzzle puzzle-string)]
-    {:puzzle-string puzzle-string
+    {:puzzle-string (clojure.string/trim puzzle-string)
      :board {:size (puzzle-size islands)
              :islands islands
              :bridges []
