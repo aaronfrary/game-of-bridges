@@ -4,15 +4,19 @@
     align-items: flex-start;
 }
 
-#board-panel, #puzzle-select-panel {
+#board-panel, #puzzle-select-panel, #puzzle-input-panel {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     text-align: center;
 }
 
-#puzzle-select-panel {
+#puzzle-select-panel, #puzzle-input-panel {
     margin-left: 40px;
+}
+
+#puzzle-select-panel {
     width: 200px;
 }
 
@@ -23,6 +27,10 @@
 
 #puzzle-status {
     margin-top: 12px;
+}
+
+#puzzle-input {
+    margin-bottom: 12px;
 }
 
 button.puzzle-select {
