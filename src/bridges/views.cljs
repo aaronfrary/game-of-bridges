@@ -80,7 +80,7 @@
 
 (defn puzzle-status []
   (let [solved @(re-frame/subscribe [::subs/game-won])]
-    [:div#puzzle-status (if solved "Puzzle solved!" "")]))
+    [:div#puzzle-status (when solved "Puzzle solved!")]))
 
 (defn main-panel []
   [:div
