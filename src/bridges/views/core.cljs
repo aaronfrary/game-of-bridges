@@ -23,8 +23,8 @@
 (defn puzzle-status []
   [:div#puzzle-status
    (cond
-     @(rf/subscribe [::subs/game-won]) "Puzzle solved!")
-     @(rf/subscribe [::subs/solver-failed]) "Could not compute next move."])
+     @(rf/subscribe [::subs/game-won]) "Puzzle solved!"
+     @(rf/subscribe [::subs/solver-failed]) "Could not compute next move.")])
 
 (defn puzzle-select-button [puzzle-string text]
   [:button.puzzle-select
