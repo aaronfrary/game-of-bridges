@@ -32,6 +32,13 @@
   (and (every? (partial full? bridges) islands)
        (connected? islands bridges)))
 
+(defn isolating?
+  "Return true if state illegal due to isolation."
+  [{:keys [islands bridges]}]
+  (and (some (partial every? (partial full? bridges))
+             (util/connected-components islands bridges))
+       (not (game-won? islands bridges))))
+
 (defn can-add-bridge? [bridges island-1 island-2]
   (not (or (full? bridges island-1)
            (full? bridges island-2)
@@ -79,3 +86,6 @@
    (if-let [bridge (bridge-between bridges island-1 island-2)]
      (inc-bridge bridges bridge)
      (add-new-bridge bridges {:source island-1 :target island-2}))))
+
+(defn merge-bridges [bridges-1 bridges-2]
+  (reduce force-add-bridge bridges-1 bridges-2))

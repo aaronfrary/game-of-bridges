@@ -60,7 +60,7 @@
 
 (defn hint []
   (if-let [hint @(re-frame/subscribe [::subs/hint])]
-    [:div.hint-wrapper [bridge hint]]))
+    [:div.hint-wrapper [bridge (assoc hint :num 0)]]))
 
 (defn islands []
   (let [islands @(re-frame/subscribe [::subs/islands])]
@@ -77,7 +77,7 @@
 (defn game-board []
   (let [{:keys [width height]} @(re-frame/subscribe [::subs/board-size])]
     [:div#game-board {:style {:width (coord->px width) :height (coord->px height)}}
-     [bridges]
      [potential-bridges]
      [hint]
+     [bridges]
      [islands]]))

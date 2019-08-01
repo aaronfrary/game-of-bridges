@@ -3,6 +3,7 @@
    [re-frame.core :as re-frame]
    [bridges.db :as db]
    [bridges.game.logic :as l]
+   [bridges.game.solver :as s]
    ))
 
 (re-frame/reg-event-db
@@ -38,3 +39,10 @@
    (-> board
        (update-in [:bridges] l/add-bridge bridge)
        (assoc :hint nil))))
+
+(re-frame/reg-event-db
+ ::toggle-hint
+ [(re-frame/path :board)]
+ (fn [board _]
+   (assoc board :hint (if (:hint board) nil
+                        (s/next-move board)))))

@@ -33,7 +33,7 @@
     [:div#board-panel
      [:div#solver-button-segment
       [:button#hint-button.solver
-       {:on-click #(re-frame/dispatch [::events/show-hint])}
+       {:on-click #(re-frame/dispatch [::events/toggle-hint])}
        "Show Hint"]
       [:button#solve-button.solver
        {:on-click #(re-frame/dispatch [::events/solve-puzzle])}
