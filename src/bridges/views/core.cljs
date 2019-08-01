@@ -35,7 +35,7 @@
   (let [{:keys [width height]} @(re-frame/subscribe [::subs/board-size])]
     [:textarea#puzzle-input
      {:value @(re-frame/subscribe [::subs/puzzle-string])
-      :on-change #(re-frame/dispatch [::events/puzzle-input-change (-> % .-target .-value)])
+      :on-change #(re-frame/dispatch [::events/select-puzzle (-> % .-target .-value)])
       :rows (max height 12)
       :cols (max width 24)}]))
 
@@ -55,7 +55,4 @@
      [puzzle-select-button puzzles/example-25x25 "Example 25x25 Puzzle"]]
     [:div#puzzle-input-panel
      [:h2 "...or create your own."]
-     [puzzle-input]
-     [:button#puzzle-input-button.puzzle-select
-      {:on-click #(re-frame/dispatch [::events/load-input-puzzle])}
-      "Load"]]]])
+     [puzzle-input]]]])
