@@ -1,7 +1,7 @@
 Bridges
 =======
 
-Try the game here: (link coming soon)
+Try the game here: www.aaronfrary.com/game-of-bridges
 
 ---
 
