@@ -41,6 +41,7 @@
 
 (defn main-panel []
   [:div#main-panel
+   {:on-click #(re-frame/dispatch [::events/set-source-island nil])}
    [:h1 "Bridges"]
    [:div#wrapper
     [:div#board-panel
