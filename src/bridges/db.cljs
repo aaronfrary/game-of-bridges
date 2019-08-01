@@ -48,4 +48,5 @@
              :islands islands
              :bridges []
              :source-island nil
-             :target-island nil}}))
+             :target-island nil
+             :hint {:fst {:x 2 :y 0 :num 4} :snd {:x 5 :y 0 :num 6} :num 0}}}))

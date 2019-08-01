@@ -35,4 +35,6 @@
  ::add-bridge
  [(re-frame/path :board)]
  (fn [board [_ bridge]]
-   (update-in board [:bridges] l/add-bridge bridge)))
+   (-> board
+       (update-in [:bridges] l/add-bridge bridge)
+       (assoc :hint nil))))

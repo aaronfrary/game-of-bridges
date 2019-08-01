@@ -159,16 +159,20 @@ button.puzzle-select {
             height: 16px;
         }
     }
+}
 
-    &:hover {
-        .highlight-target {
-            background-color: Lavender;
-        }
-        &.vertical .line-x0 {
-            border-left: 2px solid Silver;
-        }
-        &.horizontal .line-x0 {
-            border-top: 2px solid Silver;
-        }
+.hint-wrapper .bridge .highlight-target {
+    background-color: LightSkyBlue;
+}
+
+.bridge:hover {
+    .highlight-target {
+        background-color: Lavender;
+    }
+    &.vertical .line-x0 {
+        border-left: 2px solid Silver;
+    }
+    &.horizontal .line-x0 {
+        border-top: 2px solid Silver;
     }
 }

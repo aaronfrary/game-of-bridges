@@ -37,6 +37,11 @@
   (fn [db]
     (get-in db [:board :target-island])))
 
+(re-frame/reg-sub
+  ::hint
+  (fn [db]
+    (get-in db [:board :hint])))
+
 
 ;;; Computed subscriptions (re-frame Layer 3)
 

@@ -58,6 +58,10 @@
 (defn make-bridge [b]
   ^{:key (bridge->key b)} [bridge b])
 
+(defn hint []
+  (if-let [hint @(re-frame/subscribe [::subs/hint])]
+    [:div.hint-wrapper [bridge hint]]))
+
 (defn islands []
   (let [islands @(re-frame/subscribe [::subs/islands])]
     [:<> (map make-island islands)]))
@@ -75,4 +79,5 @@
     [:div#game-board {:style {:width (coord->px width) :height (coord->px height)}}
      [bridges]
      [potential-bridges]
+     [hint]
      [islands]]))
