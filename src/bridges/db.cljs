@@ -1,5 +1,5 @@
 (ns bridges.db
-  (:require [bridges.puzzles :as puzzles]))
+  (:require [bridges.game.puzzles :as puzzles]))
 
 ;;; Data Structures:
 ;;;

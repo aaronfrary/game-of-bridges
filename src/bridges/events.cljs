@@ -2,7 +2,7 @@
   (:require
    [re-frame.core :as re-frame]
    [bridges.db :as db]
-   [bridges.logic :as l]
+   [bridges.game.logic :as l]
    ))
 
 (re-frame/reg-event-db

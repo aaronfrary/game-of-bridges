@@ -1,4 +1,4 @@
-(ns bridges.util
+(ns bridges.game.util
   (:require [clojure.set]))
 
 (defn strcmp [s1 s2]

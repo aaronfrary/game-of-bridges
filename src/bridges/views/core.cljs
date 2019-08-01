@@ -3,7 +3,7 @@
    [re-frame.core :as re-frame]
    [bridges.subs :as subs]
    [bridges.events :as events]
-   [bridges.puzzles :as puzzles]
+   [bridges.game.puzzles :as puzzles]
    [bridges.views.board :as board]))
 
 

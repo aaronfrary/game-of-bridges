@@ -1,7 +1,7 @@
 (ns bridges.subs
   (:require
    [re-frame.core :as re-frame]
-   [bridges.logic :as l]
+   [bridges.game.logic :as l]
    ))
 
 

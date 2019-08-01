@@ -1,4 +1,4 @@
-(ns bridges.line)
+(ns bridges.game.line)
 
 ;;;; Functions pertaining to the "line" and "point" interfaces
 

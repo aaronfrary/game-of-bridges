@@ -1,8 +1,7 @@
-(ns bridges.logic
+(ns bridges.game.logic
   (:require
-   [bridges.util :as util]
-   [bridges.line :as line]
-   ))
+   [bridges.game.util :as util]
+   [bridges.game.line :as line]))
 
 (defn canonical-bridge [{:keys [fst snd num] :as bridge}]
   (if (util/str< snd fst) {:fst snd :snd fst :num num} bridge))

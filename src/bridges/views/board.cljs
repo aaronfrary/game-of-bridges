@@ -3,7 +3,7 @@
    [re-frame.core :as re-frame]
    [bridges.subs :as subs]
    [bridges.events :as events]
-   [bridges.line :as line]))
+   [bridges.game.line :as line]))
 
 ;;; Constants
 

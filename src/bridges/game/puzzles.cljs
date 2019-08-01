@@ -1,4 +1,4 @@
-(ns bridges.puzzles)
+(ns bridges.game.puzzles)
 
 (def example-9x7
 "3.4...3..
