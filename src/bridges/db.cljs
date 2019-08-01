@@ -50,4 +50,5 @@
              :source-island nil
              :target-island nil
              :hint nil}
-     :solve false}))
+     :solve false
+     :solver-failed false}))

@@ -21,8 +21,10 @@
        "Solve"]]))
 
 (defn puzzle-status []
-  (let [solved @(re-frame/subscribe [::subs/game-won])]
-    [:div#puzzle-status (when solved "Puzzle solved!")]))
+  [:div#puzzle-status
+   (cond
+     @(re-frame/subscribe [::subs/solver-failed]) "Could not compute next move."
+     @(re-frame/subscribe [::subs/game-won]) "Puzzle solved!")])
 
 (defn puzzle-select-button [puzzle-string text]
   [:button.puzzle-select

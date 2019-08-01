@@ -47,6 +47,11 @@
   (fn [db]
     (:solve db)))
 
+(re-frame/reg-sub
+  ::solver-failed
+  (fn [db]
+    (:solver-failed db)))
+
 ;;; Computed subscriptions (re-frame Layer 3)
 
 (re-frame/reg-sub

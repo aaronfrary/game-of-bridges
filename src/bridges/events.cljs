@@ -34,18 +34,20 @@
 
 (re-frame/reg-event-db
  ::add-bridge
- [(re-frame/path :board)]
- (fn [board [_ bridge]]
-   (-> board
-       (update-in [:bridges] l/add-bridge bridge)
-       (assoc :hint nil))))
+ (fn [db [_ bridge]]
+   (-> db
+       (update-in [:board :bridges] l/add-bridge bridge)
+       (assoc-in [:board :hint] nil)
+       (assoc :solver-failed false))))
 
 (re-frame/reg-event-db
  ::toggle-hint
- [(re-frame/path :board)]
- (fn [board _]
-   (assoc board :hint (if (:hint board) nil
-                        (s/next-move board)))))
+ (fn [db _]
+   (if (get-in [:board :hint] db)
+     (assoc-in db [:board :hint] nil)
+     (if-let [move (s/next-move (:board db))]
+       (assoc-in db [:board :hint] move)
+       (assoc db :solver-failed true)))))
 
 (re-frame/reg-event-fx
  ::solve-puzzle
@@ -63,4 +65,4 @@
        {:db db
         :dispatch [::add-bridge move]
         :dispatch-later [{:ms 0 :dispatch [::solve-next-step]}]}
-       {:db (assoc db :solve false)}))))
+       {:db (assoc db :solve false :solver-failed true)}))))
