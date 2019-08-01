@@ -1,15 +1,8 @@
-# From leingen
+/*.log
 /target
-/classes
-/checkouts
-pom.xml
-pom.xml.asc
-*.jar
-*.class
-/.lein-*
-/.nrepl-port
-
-# Temporary
-/doc
-
-
+/*-init.clj
+/resources/public/js/compiled
+/resources/public/css
+out
+.rebel_readline_history
+/node_modules

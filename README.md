@@ -1,7 +1,7 @@
 Bridges
 =======
 
-Download the game here: https://github.com/aaronfrary/game-of-bridges/archive/download.zip
+Try the game here: (link coming soon)
 
 ---
 
@@ -16,67 +16,108 @@ islands such that the following criteria are met:
   that island.
 - Each island can be reached from any other following a path over the bridges.
 
-Implemented in (mostly) pure functional Clojure - side effects are limited to
-the draw functions.  Includes a step-by-step puzzle solver that can give a hint
-for the next move or solve a whole puzzle.
-
-Setup
------
-
-Download and unzip bridges.zip, and double-click the "bridges.jar" file
-any time to play. Requires Java.
+Implemented in ClojureScript, using [re-frame](https://github.com/Day8/re-frame)
+for the user interface. Includes a step-by-step puzzle solver that can show a
+hint for the next move or solve a whole puzzle.
 
 Gameplay
 --------
 
-Mouse over islands to highlight your options. Click on a highlighted segment to
-add a bridge there.  Press the "h" key for a hint, or the "s" key to
-automatically solve the rest of the puzzle.  Press the "Escape" key to exit.
-
-Puzzles
--------
-
-Three sample puzzles are included in the "puzzles" directory in bridges.zip,
-and you can easily add more of your own.  Each puzzle is just a text file
-containing an ASCII picture of the initial board state:
-
-```
-3.4...3
-.......
-5..5..5
-.......
-2..1...
-.1....3
-```
-
-The drawing should be rectangular and can be of any size.  Numbers from 1 to 8
-are interpreted as islands, and any other character is interpreted as empty
-space.
-
-The game and solver have been tested on boards up to 25x25, containing up to 87
-islands, and makes no guarantees about behavior on ill-formed or unsolvable
-puzzles (or any puzzle not included with the game, for that matter).
+Mouse over an island to view potential bridges for it. Click on a potential
+bridge to create it, or on a single bridge to make it a double bridge.
+Click on a double bridge to remove it. Press the "Show Hint" button to
+highlight a required move if there is one available, or the "Solve" button
+to automatically solve the rest of the puzzle. Choose between three example
+puzzles or build your own.
 
 Solver
 ------
 
 The puzzle solver is based on the intersection and elimination search algorithm
-described by Yen et al. in 2011.  Where they implement a computationally
-expensive elimination search phase, I instead modified the intersection phase
-to take into account the rule that all islands must be connected, and remove
-from consideration moves that violate this rule.  This does not necessarily
-provide a benefit in terms of speed, but it guarantees that even in difficult
-scenarios that require the connection rule to solve, the algorithm will find a
-next move that is *required* by the current game state.  In contrast,
-elimination search would find a random move that happens to be part of some
-solution to the puzzle.  I like to think the removal of brute force search
-makes for a much more elegant algorithm `:)`
+described by Yen et al. in 2011. The elimination search phase is computationally
+expensive (involving taking a guess and backtracking if it leads to an error)
+and is not needed for most puzzles, so I did not implement it here.  Instead I
+modified the intersection phase to take into account the rule that all
+islands must be connected, removing from consideration moves that violate this
+rule. This covers the primary case that elimination search was needed for in
+the original algorithm.
 
-### Disclaimer
+This still leaves some puzzles that the solver cannot complete on its own. In
+the minimal example below, there are two valid ways to finish the puzzle: by
+adding two vertical bridges, or adding two horizontal bridges.
 
-I have made no attempt to systematically test this code on a wide variety of
-puzzles.  If you find puzzles that are not handled properly, feel free to
-[contact me](http://www.aaronfrary.com) with feedback and/or suggestions.
+```
+2-2.1
+|....
+2-3.2
+..|.|
+..2-2
+```
+
+Using only the intersection phase of the algorithm, the solver can only find
+moves that are required in all solutions, and so won't make the choice between
+the vertical or horizontal solution in this puzzle. I think this is a reasonable
+trade-off for making the tool more usable in practice as a puzzle-solving
+assistant.
+
+Development
+-----------
+
+### Compile css:
+
+Compile css file once.
+
+```
+lein less once
+```
+
+Automatically recompile css file on change.
+
+```
+lein less auto
+```
+
+### Run application:
+
+```
+lein clean
+lein figwheel dev
+```
+
+Figwheel will automatically push cljs changes to the browser.
+
+Wait a bit, then browse to [http://localhost:3449](http://localhost:3449).
+
+### Run tests:
+
+Install test dependencies
+
+```
+npm install
+npm install -g karma-cli
+```
+
+And then run the tests
+
+```
+lein clean
+lein doo chrome-headless test once
+```
+
+Note that [doo](https://github.com/bensu/doo) can be configured to run
+cljs.test in many JS environments (phantom, chrome, ie, safari, opera, slimer,
+node, rhino, or nashorn), but only headless chrome is included in the dev
+dependencies.
+
+Production Build
+----------------
+
+To compile clojurescript to javascript:
+
+```
+lein clean
+lein cljsbuild once min
+```
 
 References
 ----------
@@ -89,10 +130,3 @@ References
   in *IEEE International Conference on Fuzzy Systems (FUZZ)*,
   June 27-30, 2011, Taipei, Taiwan, 185-189. IEEE.
   [[link](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6007662)]
-
-License
--------
-
-Copyright © 2015 Aaron Graham-Horowitz
-
-Distributed under the GNU General Public License version 3.

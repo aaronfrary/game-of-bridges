@@ -1,0 +1,77 @@
+@import "board";
+
+#main-panel {
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    h1 {
+        margin: 0;
+    }
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+#board-panel, #puzzle-select-panel, #puzzle-input-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#puzzle-select-panel,
+#puzzle-input-panel
+{
+    margin-left: 40px;
+}
+
+#puzzle-select-panel {
+    width: 200px;
+}
+
+#puzzle-input {
+    margin-bottom: 12px;
+}
+
+#puzzle-status {
+    margin-top: 12px;
+}
+
+button.solver,
+button.puzzle-select {
+    cursor: pointer;
+    border: 2px solid black;
+    background-color: gray;
+    color: white;
+    font-size: 14px;
+    padding: 4px 12px;
+    margin-bottom: 8px;
+    border-radius: 20px;
+}
+
+#solver-button-segment {
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 4px;
+
+    .hint-button {
+        margin-right: 12px;
+    }
+
+    &.solving {
+        .hint-button {
+            background-color: DarkGray;
+            border-color: gray;
+            cursor: default;
+        }
+        .solve-button {
+            background-color: ForestGreen;
+        }
+    }
+}
