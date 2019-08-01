@@ -41,11 +41,18 @@
 
 (defn neighbors
   "Return islands to which a bridge to `island' can be added."
-  [island bridges islands]
+  [island {:keys [islands bridges]}]
   (if (full? bridges island) []
     (->> [:up :down :left :right]
          (keep #(util/get-item % island islands))
          (filter (partial can-add-bridge? bridges island)))))
+
+(defn potential-bridges
+  "Return bridges that could be added to `island'."
+  [island state]
+    (->> (neighbors island state)
+         (map #(identity {:fst island :snd % :num 0}))
+         (filter #(not-any? (partial bridge= %) (:bridges state)))))
 
 (defn force-add-bridge [bridges bridge]
   (conj (remove (partial bridge= bridge) bridges)
