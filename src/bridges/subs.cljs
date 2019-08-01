@@ -1,9 +1,7 @@
 (ns bridges.subs
   (:require
    [re-frame.core :as re-frame]
-   [bridges.game.logic :as l]
-   ))
-
+   [bridges.game.logic :as l]))
 
 ;;; Simple subscriptions (re-frame Layer 2)
 
@@ -46,6 +44,7 @@
   ::solver-failed
   (fn [db]
     (:solver-failed db)))
+
 
 ;;; Computed subscriptions (re-frame Layer 3)
 

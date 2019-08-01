@@ -4,8 +4,7 @@
    [re-frame.core :as re-frame]
    [bridges.events :as events]
    [bridges.views.core :as views]
-   [bridges.config :as config]
-   ))
+   [bridges.config :as config]))
 
 
 (defn dev-setup []

@@ -1,6 +1,7 @@
 (ns bridges.game.solver
-  (:require [bridges.game.logic :as l]
-            [bridges.game.util :as util]))
+  (:require
+   [bridges.game.logic :as l]
+   [bridges.game.util :as util]))
 
 (defn- implicit-single-bridges [bridges]
   (->> bridges
