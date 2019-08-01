@@ -49,4 +49,5 @@
              :bridges []
              :source-island nil
              :target-island nil
-             :hint nil}}))
+             :hint nil}
+     :solve false}))

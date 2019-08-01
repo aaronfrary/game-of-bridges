@@ -46,3 +46,21 @@
  (fn [board _]
    (assoc board :hint (if (:hint board) nil
                         (s/next-move board)))))
+
+(re-frame/reg-event-fx
+ ::solve-puzzle
+ (fn [{:keys [db]} _]
+   (if (:solve db)
+     {:db (assoc db :solve false)}
+     {:db (assoc db :solve true)
+      :dispatch [::solve-next-step]})))
+
+(re-frame/reg-event-fx
+ ::solve-next-step
+ (fn [{:keys [db]} _]
+   (if (not (:solve db)) {:db db}
+     (if-let [move (s/next-move (:board db))]
+       {:db db
+        :dispatch [::add-bridge move]
+        :dispatch-later [{:ms 0 :dispatch [::solve-next-step]}]}
+       {:db (assoc db :solve false)}))))
