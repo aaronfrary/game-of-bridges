@@ -1,9 +1,11 @@
-#main-panel {
-    margin-left: 30px;
-}
+@import "board";
 
 h1 {
     margin-bottom: 0;
+}
+
+#main-panel {
+    margin-left: 30px;
 }
 
 #wrapper {
@@ -28,6 +30,14 @@ h1 {
 
 #puzzle-select-panel {
     width: 200px;
+}
+
+#puzzle-input {
+    margin-bottom: 12px;
+}
+
+#puzzle-status {
+    margin-top: 12px;
 }
 
 button.solver,
@@ -61,129 +71,5 @@ button.puzzle-select {
         .solve-button {
             background-color: ForestGreen;
         }
-    }
-}
-
-#game-board {
-    position: relative;
-    border: 3px solid black;
-}
-
-#puzzle-status {
-    margin-top: 12px;
-}
-
-#puzzle-input {
-    margin-bottom: 12px;
-}
-
-.island {
-    position: absolute;
-    height: 25px;
-    width: 25px;
-    border: 2px solid blue;
-    background-color: white;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 28px;
-
-    &-selected {
-        border: 2px solid orange;
-    }
-    &-full {
-        border: 2px solid LimeGreen;
-    }
-}
-
-.bridge {
-    position: absolute;
-    cursor: pointer;
-
-    .line {
-        position: absolute;
-    }
-
-    .highlight-target {
-        position: absolute;
-    }
-
-    &.vertical {
-        width: 27px;
-
-        .line {
-            top: 0;
-            bottom: 0;
-            &-x0 {
-                left: 13px;
-                width: 0;
-                border-left: 2px solid LightGray;
-            }
-            &-x1 {
-                left: 13px;
-                width: 0;
-                border-left: 2px solid gray;
-            }
-            &-x2 {
-                left: 10px;
-                width: 4px;
-                border-left: 2px solid gray;
-                border-right: 2px solid gray;
-            }
-        }
-
-        .highlight-target {
-            top: 0;
-            bottom: 0;
-            left: 6px;
-            width: 16px;
-        }
-    }
-
-    &.horizontal {
-        height: 27px;
-
-        .line {
-            left: 0;
-            right: 0;
-            &-x0 {
-                top: 13px;
-                height: 0;
-                border-top: 2px solid Gainsboro;
-            }
-            &-x1 {
-                top: 13px;
-                height: 0;
-                border-top: 2px solid gray;
-            }
-            &-x2 {
-                top: 10px;
-                height: 4px;
-                border-top: 2px solid gray;
-                border-bottom: 2px solid gray;
-            }
-        }
-
-        .highlight-target {
-            left: 0;
-            right: 0;
-            top: 6px;
-            height: 16px;
-        }
-    }
-}
-
-.hint-wrapper .bridge .highlight-target {
-    background-color: LightSkyBlue;
-}
-
-.bridge:hover {
-    .highlight-target {
-        background-color: Lavender;
-    }
-    &.vertical .line-x0 {
-        border-left: 2px solid Silver;
-    }
-    &.horizontal .line-x0 {
-        border-top: 2px solid Silver;
     }
 }
