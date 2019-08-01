@@ -3,7 +3,7 @@
    [reagent.core :as reagent]
    [re-frame.core :as re-frame]
    [bridges.events :as events]
-   [bridges.views :as views]
+   [bridges.views.core :as views]
    [bridges.config :as config]
    ))
 
