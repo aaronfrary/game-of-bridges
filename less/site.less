@@ -1,3 +1,11 @@
+#main-panel {
+    margin-left: 30px;
+}
+
+h1 {
+    margin-bottom: 0;
+}
+
 #wrapper {
     display: flex;
     flex-direction: row;
@@ -12,12 +20,21 @@
     text-align: center;
 }
 
-#puzzle-select-panel, #puzzle-input-panel {
+#puzzle-select-panel,
+#puzzle-input-panel
+{
     margin-left: 40px;
 }
 
 #puzzle-select-panel {
     width: 200px;
+}
+
+#solver-button-segment {
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 4px;
 }
 
 #game-board {
@@ -33,6 +50,11 @@
     margin-bottom: 12px;
 }
 
+#hint-button {
+    margin-right: 12px;
+}
+
+button.solver,
 button.puzzle-select {
     cursor: pointer;
     border: 2px solid black;

@@ -101,6 +101,13 @@
    [:h1 "Bridges"]
    [:div#wrapper
     [:div#board-panel
+     [:div#solver-button-segment
+      [:button#hint-button.solver
+       {:on-click #(re-frame/dispatch [::events/show-hint])}
+       "Show Hint"]
+      [:button#solve-button.solver
+       {:on-click #(re-frame/dispatch [::events/solve-puzzle])}
+       "Solve"]]
      [game-board]
      [puzzle-status]]
     [:div#puzzle-select-panel
