@@ -30,11 +30,38 @@ h1 {
     width: 200px;
 }
 
+button.solver,
+button.puzzle-select {
+    cursor: pointer;
+    border: 2px solid black;
+    background-color: gray;
+    color: white;
+    font-size: 14px;
+    padding: 4px 12px;
+    margin-bottom: 8px;
+    border-radius: 20px;
+}
+
 #solver-button-segment {
     width: 100%;
     text-align: left;
     margin-top: 20px;
     margin-bottom: 4px;
+
+    .hint-button {
+        margin-right: 12px;
+    }
+
+    &.solving {
+        .hint-button {
+            background-color: DarkGray;
+            border-color: gray;
+            cursor: default;
+        }
+        .solve-button {
+            background-color: ForestGreen;
+        }
+    }
 }
 
 #game-board {
@@ -48,22 +75,6 @@ h1 {
 
 #puzzle-input {
     margin-bottom: 12px;
-}
-
-#hint-button {
-    margin-right: 12px;
-}
-
-button.solver,
-button.puzzle-select {
-    cursor: pointer;
-    border: 2px solid black;
-    background-color: gray;
-    color: white;
-    font-size: 14px;
-    padding: 4px 12px;
-    margin-bottom: 8px;
-    border-radius: 20px;
 }
 
 .island {

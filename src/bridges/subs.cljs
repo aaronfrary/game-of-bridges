@@ -42,6 +42,10 @@
   (fn [db]
     (get-in db [:board :hint])))
 
+(re-frame/reg-sub
+  ::solve
+  (fn [db]
+    (:solve db)))
 
 ;;; Computed subscriptions (re-frame Layer 3)
 

@@ -9,6 +9,17 @@
 
 ;;; Components
 
+(defn solver-buttons []
+  (let [solving @(re-frame/subscribe [::subs/solve])]
+     [:div#solver-button-segment {:class (if solving "solving" "")}
+      [:button.solver.hint-button
+       {:on-click #(re-frame/dispatch [::events/toggle-hint])
+        :disabled solving}
+       "Show Hint"]
+      [:button.solver.solve-button
+       {:on-click #(re-frame/dispatch [::events/solve-puzzle])}
+       "Solve"]]))
+
 (defn puzzle-status []
   (let [solved @(re-frame/subscribe [::subs/game-won])]
     [:div#puzzle-status (when solved "Puzzle solved!")]))
@@ -31,13 +42,7 @@
    [:h1 "Bridges"]
    [:div#wrapper
     [:div#board-panel
-     [:div#solver-button-segment
-      [:button#hint-button.solver
-       {:on-click #(re-frame/dispatch [::events/toggle-hint])}
-       "Show Hint"]
-      [:button#solve-button.solver
-       {:on-click #(re-frame/dispatch [::events/solve-puzzle])}
-       "Solve"]]
+     [solver-buttons]
      [board/game-board]
      [puzzle-status]]
     [:div#puzzle-select-panel
