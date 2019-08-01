@@ -3,10 +3,10 @@
    [bridges.game.util :as util]
    [bridges.game.line :as line]))
 
-(defn canonical-bridge [{:keys [fst snd num] :as bridge}]
+(defn- canonical-bridge [{:keys [fst snd num] :as bridge}]
   (if (util/str< snd fst) {:fst snd :snd fst :num num} bridge))
 
-(defn bridge= [b1 b2]
+(defn- bridge= [b1 b2]
   (= (dissoc (canonical-bridge b1) :num)
      (dissoc (canonical-bridge b2) :num)))
 
@@ -39,7 +39,7 @@
              (util/connected-components islands bridges))
        (not (game-won? islands bridges))))
 
-(defn can-add-bridge? [bridges island-1 island-2]
+(defn- can-add-bridge? [bridges island-1 island-2]
   (not (or (full? bridges island-1)
            (full? bridges island-2)
            (case (:num (bridge-between bridges island-1 island-2))
@@ -61,14 +61,14 @@
          (map #(identity {:fst island :snd % :num 0}))
          (filter #(not-any? (partial bridge= %) (:bridges state)))))
 
-(defn force-add-bridge [bridges bridge]
+(defn- force-add-bridge [bridges bridge]
   (conj (remove (partial bridge= bridge) bridges)
         (canonical-bridge bridge)))
 
-(defn add-new-bridge [bridges {:keys [source target]}]
+(defn- add-new-bridge [bridges {:keys [source target]}]
   (force-add-bridge bridges {:fst source :snd target :num 1}))
 
-(defn inc-bridge [bridges bridge]
+(defn- inc-bridge [bridges bridge]
   (keep #(cond
            (not (bridge= % bridge)) %
            (>= (:num %) 2)          nil

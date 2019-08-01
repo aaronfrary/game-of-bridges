@@ -15,13 +15,13 @@
 ;;;     islands implement the "point" interface: { :x <int>, :y <int> }
 ;;;     bridges implement the "line" interface: { :fst <point>, :snd <point> }
 
-(defn bridges-number [c]
+(defn- bridges-number [c]
   (case c
     \1 1 \2 2 \3 3 \4 4
     \5 5 \6 6 \7 7 \8 8
     nil))
 
-(defn str->islands [y s]
+(defn- str->islands [y s]
   (filter identity
     (map-indexed
       (fn [x c]
@@ -29,13 +29,13 @@
           {:x x :y y :num n}))
       s)))
 
-(defn read-puzzle [s]
+(defn- read-puzzle [s]
   (->> s
        (clojure.string/split-lines)
        (map-indexed str->islands)
        (flatten)))
 
-(defn puzzle-size [islands]
+(defn- puzzle-size [islands]
   {:width (->> islands (map :x) (apply max) (inc))
    :height (->> islands (map :y) (apply max) (inc))})
 

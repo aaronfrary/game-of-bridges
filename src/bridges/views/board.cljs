@@ -8,21 +8,21 @@
 ;;; Constants
 
 ; NOTE: Should coordinate with CSS.
-(def board-scale 28)
+(def ^:private board-scale 28)
 
 
 ;;; Helper functions
 
-(defn abs [n] (max (- n) n))
+(defn- abs [n] (max (- n) n))
 
-(defn coord->px [x] (str (* board-scale x) "px"))
+(defn- coord->px [x] (str (* board-scale x) "px"))
 
-(defn island->key [{:keys [x y]}] (str x ":" y))
+(defn- island->key [{:keys [x y]}] (str x ":" y))
 
-(defn bridge->key [{:keys [fst snd]}]
+(defn- bridge->key [{:keys [fst snd]}]
   (str (island->key fst) "::" (island->key snd)))
 
-(defn bridge-style [{:keys [fst snd] :as b}]
+(defn- bridge-style [{:keys [fst snd] :as b}]
   (if (line/vertical? b)
     {:left (coord->px (:x fst))
      :top (coord->px (+ (min (:y fst) (:y snd)) 0.5))
