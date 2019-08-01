@@ -48,7 +48,6 @@
              :islands islands
              :bridges []
              :source-island nil
-             :target-island nil
              :hint nil}
      :solve false
      :solver-failed false}))

@@ -33,11 +33,6 @@
     (get-in db [:board :source-island])))
 
 (re-frame/reg-sub
-  ::target-island
-  (fn [db]
-    (get-in db [:board :target-island])))
-
-(re-frame/reg-sub
   ::hint
   (fn [db]
     (get-in db [:board :hint])))

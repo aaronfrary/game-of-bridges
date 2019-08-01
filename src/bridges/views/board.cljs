@@ -36,9 +36,8 @@
 
 (defn island [{:keys [x y num] :as i}]
   (let [source-island @(rf/subscribe [::subs/source-island])
-        target-island @(rf/subscribe [::subs/target-island])
         full-islands @(rf/subscribe [::subs/full-islands])
-        selected-class (if (or (= source-island i) (= target-island i)) " island-selected" "")
+        selected-class (if (= source-island i) " island-selected" "")
         full-class (if (some #(= % i) full-islands) " island-full" "")]
     [:div {:class (str "island" selected-class full-class)
            :style {:left (coord->px x) :top (coord->px y)}
