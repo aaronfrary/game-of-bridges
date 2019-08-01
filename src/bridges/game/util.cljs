@@ -48,18 +48,18 @@
 
 ;;; Union Find algorithm for graph connectedness
 
-(defn -find
+(defn -uf-find
   ([sets a] (some #(and (% a) %) sets))
   ([sets a & more]
-   (clojure.set/union (-find sets a) (apply (partial -find sets) more))))
+   (clojure.set/union (-uf-find sets a) (apply (partial -uf-find sets) more))))
 
-(defn -remove
+(defn -uf-remove
   ([sets a] (set (filter (complement #(% a)) sets)))
-  ([sets a & more] (apply (partial -remove (-remove sets a)) more)))
+  ([sets a & more] (apply (partial -uf-remove (-uf-remove sets a)) more)))
 
-(defn -join
-  ([sets a b] (conj (-remove sets a b) (-find sets a b)))
-  ([sets {:keys [fst snd]}] (-join sets fst snd)))
+(defn -uf-join
+  ([sets a b] (conj (-uf-remove sets a b) (-uf-find sets a b)))
+  ([sets {:keys [fst snd]}] (-uf-join sets fst snd)))
 
 (defn connected-components [nodes edges]
-    (reduce -join (set (map hash-set nodes)) edges))
+    (reduce -uf-join (set (map hash-set nodes)) edges))
