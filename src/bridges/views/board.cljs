@@ -1,6 +1,6 @@
 (ns bridges.views.board
   (:require
-   [re-frame.core :as re-frame]
+   [re-frame.core :as rf]
    [bridges.subs :as subs]
    [bridges.events :as events]
    [bridges.game.line :as line]))
@@ -35,14 +35,14 @@
 ;;; Components
 
 (defn island [{:keys [x y num] :as i}]
-  (let [source-island @(re-frame/subscribe [::subs/source-island])
-        target-island @(re-frame/subscribe [::subs/target-island])
-        full-islands @(re-frame/subscribe [::subs/full-islands])
+  (let [source-island @(rf/subscribe [::subs/source-island])
+        target-island @(rf/subscribe [::subs/target-island])
+        full-islands @(rf/subscribe [::subs/full-islands])
         selected-class (if (or (= source-island i) (= target-island i)) " island-selected" "")
         full-class (if (some #(= % i) full-islands) " island-full" "")]
     [:div {:class (str "island" selected-class full-class)
            :style {:left (coord->px x) :top (coord->px y)}
-           :on-mouse-over #(re-frame/dispatch [::events/set-source-island i])}
+           :on-mouse-over #(rf/dispatch [::events/set-source-island i])}
      num]))
 
 (defn make-island [i]
@@ -51,7 +51,7 @@
 (defn bridge [{:keys [fst snd num] :as b}]
   [:div {:class (str "bridge " (if (line/vertical? b) "vertical" "horizontal"))
          :style (bridge-style b)
-         :on-click #(re-frame/dispatch [::events/add-bridge b])}
+         :on-click #(rf/dispatch [::events/add-bridge b])}
    [:div.highlight-target]
    [:div {:class (str "line line-x" num)}]])
 
@@ -59,23 +59,23 @@
   ^{:key (bridge->key b)} [bridge b])
 
 (defn hint []
-  (if-let [hint @(re-frame/subscribe [::subs/hint])]
+  (if-let [hint @(rf/subscribe [::subs/hint])]
     [:div.hint-wrapper [bridge (assoc hint :num 0)]]))
 
 (defn islands []
-  (let [islands @(re-frame/subscribe [::subs/islands])]
+  (let [islands @(rf/subscribe [::subs/islands])]
     [:<> (map make-island islands)]))
 
 (defn bridges []
-  (let [bridges @(re-frame/subscribe [::subs/bridges])]
+  (let [bridges @(rf/subscribe [::subs/bridges])]
     [:<> (map make-bridge bridges)]))
 
 (defn potential-bridges []
-  (let [bridges @(re-frame/subscribe [::subs/potential-bridges])]
+  (let [bridges @(rf/subscribe [::subs/potential-bridges])]
     [:<> (map make-bridge bridges)]))
 
 (defn game-board []
-  (let [{:keys [width height]} @(re-frame/subscribe [::subs/board-size])]
+  (let [{:keys [width height]} @(rf/subscribe [::subs/board-size])]
     [:div#game-board {:style {:width (coord->px width) :height (coord->px height)}}
      [potential-bridges]
      [hint]
