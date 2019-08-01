@@ -1,0 +1,100 @@
+#game-board {
+  position: relative;
+  border: 3px solid black;
+}
+.island {
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  border: 2px solid blue;
+  background-color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+}
+.island-selected {
+  border: 2px solid orange;
+}
+.island-full {
+  border: 2px solid LimeGreen;
+}
+.bridge {
+  position: absolute;
+  cursor: pointer;
+}
+.bridge .line {
+  position: absolute;
+}
+.bridge .highlight-target {
+  position: absolute;
+}
+.bridge.vertical {
+  width: 27px;
+}
+.bridge.vertical .line {
+  top: 0;
+  bottom: 0;
+}
+.bridge.vertical .line-x0 {
+  left: 13px;
+  width: 0;
+  border-left: 2px solid LightGray;
+}
+.bridge.vertical .line-x1 {
+  left: 13px;
+  width: 0;
+  border-left: 2px solid gray;
+}
+.bridge.vertical .line-x2 {
+  left: 10px;
+  width: 4px;
+  border-left: 2px solid gray;
+  border-right: 2px solid gray;
+}
+.bridge.vertical .highlight-target {
+  top: 0;
+  bottom: 0;
+  left: 6px;
+  width: 16px;
+}
+.bridge.horizontal {
+  height: 27px;
+}
+.bridge.horizontal .line {
+  left: 0;
+  right: 0;
+}
+.bridge.horizontal .line-x0 {
+  top: 13px;
+  height: 0;
+  border-top: 2px solid Gainsboro;
+}
+.bridge.horizontal .line-x1 {
+  top: 13px;
+  height: 0;
+  border-top: 2px solid gray;
+}
+.bridge.horizontal .line-x2 {
+  top: 10px;
+  height: 4px;
+  border-top: 2px solid gray;
+  border-bottom: 2px solid gray;
+}
+.bridge.horizontal .highlight-target {
+  left: 0;
+  right: 0;
+  top: 6px;
+  height: 16px;
+}
+.hint-wrapper .bridge .highlight-target {
+  background-color: LightSkyBlue;
+}
+.bridge:hover .highlight-target {
+  background-color: Lavender;
+}
+.bridge:hover.vertical .line-x0 {
+  border-left: 2px solid Silver;
+}
+.bridge:hover.horizontal .line-x0 {
+  border-top: 2px solid Silver;
+}

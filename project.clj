@@ -5,7 +5,8 @@
                  [re-frame "0.10.8"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
-            [lein-less "1.7.5"]]
+            [lein-less "1.7.5"]
+            [lein-resource "16.9.1"]]
 
   :min-lein-version "2.5.3"
 
@@ -19,6 +20,9 @@
   :less {:source-paths ["less"]
          :target-path  "resources/public/css"}
 
+  :resource {:resource-paths ["resources/public"]
+             :target-path "docs"}
+
   :profiles
   {:dev
    {:dependencies [[binaryage/devtools "0.9.10"]
@@ -28,6 +32,13 @@
                    [lein-doo "0.1.8"]]}
    :prod { }
    }
+
+  :aliases
+  {"build-site" ["do"
+                 "clean"
+                 ["less" "once"]
+                 ["cljsbuild" "once" "min"]
+                 "resource"]}
 
   :cljsbuild
   {:builds

@@ -1,0 +1,163 @@
+#game-board {
+  position: relative;
+  border: 3px solid black;
+}
+.island {
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  border: 2px solid blue;
+  background-color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+}
+.island-selected {
+  border: 2px solid orange;
+}
+.island-full {
+  border: 2px solid LimeGreen;
+}
+.bridge {
+  position: absolute;
+  cursor: pointer;
+}
+.bridge .line {
+  position: absolute;
+}
+.bridge .highlight-target {
+  position: absolute;
+}
+.bridge.vertical {
+  width: 27px;
+}
+.bridge.vertical .line {
+  top: 0;
+  bottom: 0;
+}
+.bridge.vertical .line-x0 {
+  left: 13px;
+  width: 0;
+  border-left: 2px solid LightGray;
+}
+.bridge.vertical .line-x1 {
+  left: 13px;
+  width: 0;
+  border-left: 2px solid gray;
+}
+.bridge.vertical .line-x2 {
+  left: 10px;
+  width: 4px;
+  border-left: 2px solid gray;
+  border-right: 2px solid gray;
+}
+.bridge.vertical .highlight-target {
+  top: 0;
+  bottom: 0;
+  left: 6px;
+  width: 16px;
+}
+.bridge.horizontal {
+  height: 27px;
+}
+.bridge.horizontal .line {
+  left: 0;
+  right: 0;
+}
+.bridge.horizontal .line-x0 {
+  top: 13px;
+  height: 0;
+  border-top: 2px solid Gainsboro;
+}
+.bridge.horizontal .line-x1 {
+  top: 13px;
+  height: 0;
+  border-top: 2px solid gray;
+}
+.bridge.horizontal .line-x2 {
+  top: 10px;
+  height: 4px;
+  border-top: 2px solid gray;
+  border-bottom: 2px solid gray;
+}
+.bridge.horizontal .highlight-target {
+  left: 0;
+  right: 0;
+  top: 6px;
+  height: 16px;
+}
+.hint-wrapper .bridge .highlight-target {
+  background-color: LightSkyBlue;
+}
+.bridge:hover .highlight-target {
+  background-color: Lavender;
+}
+.bridge:hover.vertical .line-x0 {
+  border-left: 2px solid Silver;
+}
+.bridge:hover.horizontal .line-x0 {
+  border-top: 2px solid Silver;
+}
+#main-panel {
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+#main-panel h1 {
+  margin: 0;
+}
+#wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+#board-panel,
+#puzzle-select-panel,
+#puzzle-input-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+#puzzle-select-panel,
+#puzzle-input-panel {
+  margin-left: 40px;
+}
+#puzzle-select-panel {
+  width: 200px;
+}
+#puzzle-input {
+  margin-bottom: 12px;
+}
+#puzzle-status {
+  margin-top: 12px;
+}
+button.solver,
+button.puzzle-select {
+  cursor: pointer;
+  border: 2px solid black;
+  background-color: gray;
+  color: white;
+  font-size: 14px;
+  padding: 4px 12px;
+  margin-bottom: 8px;
+  border-radius: 20px;
+}
+#solver-button-segment {
+  width: 100%;
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 4px;
+}
+#solver-button-segment .hint-button {
+  margin-right: 12px;
+}
+#solver-button-segment.solving .hint-button {
+  background-color: DarkGray;
+  border-color: gray;
+  cursor: default;
+}
+#solver-button-segment.solving .solve-button {
+  background-color: ForestGreen;
+}
